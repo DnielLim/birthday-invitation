@@ -52,7 +52,7 @@
   /* =========================================================================
      1. Initialization & Bridge Sync
      ========================================================================= */
-  document.addEventListener("DOMContentLoaded", () => {
+  function initApp() {
     // 1. Audio player initialized immediately with defaults
     if (window.Player && !player) {
       player = new window.Player(config.tracks);
@@ -84,7 +84,14 @@
 
     // Run opening animation
     runIntroAnimation();
-  });
+  }
+
+  // Ensure initApp runs even if DOMContentLoaded already fired before script execution
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initApp);
+  } else {
+    initApp();
+  }
 
   /* Apply runtime config sent from Python or fallback defaults */
   function applyConfig(cfg) {
@@ -252,15 +259,51 @@
     const introSub = $("introSub");
     const introHint = $("introHint");
 
+    // Immediately bind click and touch events to avoid delay while intro animation plays
+    let openTriggered = false;
+    const handleOpen = (e) => {
+      if (e) {
+        if (e.type === "touchend") {
+          try { e.preventDefault(); } catch (_) {}
+        }
+      }
+      if (openTriggered) return;
+      openTriggered = true;
+      setTimeout(() => { openTriggered = false; }, 800);
+      triggerOpenInvitation();
+    };
+
+    if (openBtn) {
+      openBtn.addEventListener("click", handleOpen);
+      openBtn.addEventListener("touchend", handleOpen, { passive: false });
+    }
+
+    // Scroll down cue on opening screen
+    const scrollCue = $("introScrollCue");
+    scrollCue?.addEventListener("click", handleOpen);
+
+    // Auto-boost balloons & play audio on first user scroll interaction
+    let scrollTriggered = false;
+    window.addEventListener("scroll", () => {
+      if (!scrollTriggered && (window.scrollY || document.documentElement.scrollTop) > 40) {
+        scrollTriggered = true;
+        try {
+          if (player && !player.playing) player.start();
+        } catch (_) {}
+        try {
+          if (bgScene) bgScene.burst();
+        } catch (_) {}
+      }
+    }, { passive: true });
+
     if (!window.gsap) {
       document.body.classList.add("no-gsap");
-      openBtn?.addEventListener("click", triggerOpenInvitation);
       return;
     }
 
     const tl = gsap.timeline();
 
-    // 1. Initial soft reveal of opening text
+    // Soft reveal of opening text
     tl.fromTo(
       introEyebrow,
       { opacity: 0, y: -20, filter: "blur(8px)" },
@@ -288,51 +331,63 @@
       { opacity: 0.85, duration: 0.8 },
       "-=0.4"
     );
-
-    openBtn?.addEventListener("click", triggerOpenInvitation);
-
-    // Scroll down cue on opening screen
-    const scrollCue = $("introScrollCue");
-    scrollCue?.addEventListener("click", triggerOpenInvitation);
-
-    // Auto-boost balloons & play audio on first user scroll interaction
-    let scrollTriggered = false;
-    window.addEventListener("scroll", () => {
-      if (!scrollTriggered && window.scrollY > 40) {
-        scrollTriggered = true;
-        if (player && !player.playing) {
-          player.start();
-        }
-        if (bgScene) {
-          bgScene.burst();
-        }
-      }
-    }, { passive: true });
   }
 
   /* When "Open Invitation ✨" or scroll cue is clicked */
   function triggerOpenInvitation() {
-    // 1. Start background playlist on click gesture
-    if (player) {
-      player.start();
+    // 1. Start background playlist on click gesture with safety
+    try {
+      if (player && typeof player.start === "function") {
+        player.start();
+      }
+    } catch (err) {
+      console.warn("Audio playback gesture warning:", err);
     }
 
-    // 2. Celebratory 3D visual FX
-    if (bgScene) {
-      bgScene.burst();
+    // 2. Celebratory 3D visual FX with safety
+    try {
+      if (bgScene && typeof bgScene.burst === "function") {
+        bgScene.burst();
+      }
+    } catch (err) {
+      console.warn("3D scene burst warning:", err);
     }
-    if (fx) {
-      fx.confettiCannons();
-      fx.sparkles(70);
-      fx.confettiRain(3500);
+    try {
+      if (fx) {
+        if (typeof fx.confettiCannons === "function") fx.confettiCannons();
+        if (typeof fx.sparkles === "function") fx.sparkles(70);
+        if (typeof fx.confettiRain === "function") fx.confettiRain(3500);
+      }
+    } catch (err) {
+      console.warn("Confetti visual warning:", err);
     }
 
     // 3. Smooth scroll down to main invitation card #invitation
     const target = $("invitation");
     if (target) {
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      try {
+        const rect = target.getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        const targetY = rect.top + scrollTop;
+
+        if (typeof window.smoothScrollTo === "function") {
+          window.smoothScrollTo(targetY, 500);
+        } else {
+          window.scrollTo({ top: targetY, behavior: "smooth" });
+        }
+      } catch (err) {
+        console.warn("Smooth scroll fallback:", err);
+      }
+
+      try {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      } catch (err) {
+        target.scrollIntoView();
+      }
     }
   }
+  // Expose globally so inline onclick on #openBtn works immediately without delay
+  window.triggerOpenInvitation = triggerOpenInvitation;
 
   /* =========================================================================
      4. 3D Tilt for Cards (Invitation, Celebrants, Memories)
@@ -815,9 +870,39 @@
      9. Manual Section Navigation & Active State (IntersectionObserver)
      ========================================================================= */
   const sectionList = ["intro", "invitation", "celebrants", "cake", "details", "location", "memories", "rsvp", "final"];
+  const sectionIcons = {
+    intro: "🏠",
+    invitation: "💌",
+    celebrants: "👥",
+    cake: "🎂",
+    details: "📅",
+    location: "📍",
+    memories: "📸",
+    rsvp: "✉️",
+    final: "❤️"
+  };
+
+  function scrollToSectionElement(el) {
+    if (!el) return;
+    try {
+      const rect = el.getBoundingClientRect();
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      const targetY = rect.top + scrollTop;
+
+      if (typeof window.smoothScrollTo === "function") {
+        window.smoothScrollTo(targetY, 450);
+      } else {
+        window.scrollTo({ top: targetY, behavior: "smooth" });
+      }
+    } catch (_) {}
+
+    try {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    } catch (_) {}
+  }
 
   function scrollNextSection() {
-    const curY = window.scrollY + window.innerHeight * 0.2;
+    const curY = (window.pageYOffset || document.documentElement.scrollTop || 0) + window.innerHeight * 0.2;
     let nextEl = null;
 
     for (const id of sectionList) {
@@ -829,15 +914,19 @@
     }
 
     if (nextEl) {
-      nextEl.scrollIntoView({ behavior: "smooth", block: "start" });
+      scrollToSectionElement(nextEl);
     } else {
-      window.scrollTo({ top: 0, behavior: "smooth" }); // Loop back to top
+      if (typeof window.smoothScrollTo === "function") {
+        window.smoothScrollTo(0, 450);
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
     }
   }
   window.scrollNextSection = scrollNextSection;
 
   function scrollPrevSection() {
-    const curY = window.scrollY - 80;
+    const curY = (window.pageYOffset || document.documentElement.scrollTop || 0) - 80;
     let prevEl = null;
 
     for (let i = sectionList.length - 1; i >= 0; i--) {
@@ -849,20 +938,73 @@
     }
 
     if (prevEl) {
-      prevEl.scrollIntoView({ behavior: "smooth", block: "start" });
+      scrollToSectionElement(prevEl);
     } else {
       const lastEl = $(sectionList[sectionList.length - 1]);
-      if (lastEl) lastEl.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (lastEl) scrollToSectionElement(lastEl);
     }
   }
   window.scrollPrevSection = scrollPrevSection;
 
   function initScrollNavigation() {
+    const quickNav = $("quickNav");
+    const arrowBtn = $("quickNavArrowBtn");
+    const arrowIcon = $("quickNavArrowIcon");
     const topBtn = $("scrollTopBtn");
     const bottomBtn = $("scrollBottomBtn");
     const finalBackTop = $("finalBackTopBtn");
     const heroScrollCue = document.querySelector(".scroll-cue");
     const navDots = $$(".quick-nav__dot");
+
+    function setCollapsed(collapsed) {
+      if (!quickNav) return;
+      if (collapsed) {
+        quickNav.classList.add("is-collapsed");
+        if (arrowIcon) arrowIcon.textContent = "▶";
+        arrowBtn?.setAttribute("title", "Buka Navigasi ke Samping (▶)");
+      } else {
+        quickNav.classList.remove("is-collapsed");
+        if (arrowIcon) arrowIcon.textContent = "◀";
+        arrowBtn?.setAttribute("title", "Tutup Navigasi ke Samping (◀)");
+      }
+    }
+
+    // Toggle navigation drawer sideways
+    arrowBtn?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const isCurrentlyCollapsed = quickNav?.classList.contains("is-collapsed");
+      setCollapsed(!isCurrentlyCollapsed);
+    });
+
+    // Start open on desktop, or collapsed on narrow mobile screens
+    if (window.innerWidth <= 600) {
+      setCollapsed(true);
+    } else {
+      setCollapsed(false);
+    }
+
+    // Nav dots click (Manual shortcut to section)
+    navDots.forEach((dot) => {
+      dot.addEventListener("click", (e) => {
+        e.preventDefault();
+        const targetId = dot.getAttribute("href");
+        const targetEl = document.querySelector(targetId);
+        if (targetEl) {
+          scrollToSectionElement(targetEl);
+        }
+        // Auto-close on mobile after selecting a section
+        if (window.innerWidth <= 768) {
+          setCollapsed(true);
+        }
+      });
+    });
+
+    // Close on Escape key
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && quickNav && !quickNav.classList.contains("is-collapsed")) {
+        setCollapsed(true);
+      }
+    });
 
     // Top button (▲) -> Scroll to previous section
     topBtn?.addEventListener("click", (e) => {
@@ -871,7 +1013,11 @@
     });
 
     finalBackTop?.addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (typeof window.smoothScrollTo === "function") {
+        window.smoothScrollTo(0, 450);
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
     });
 
     // Bottom button (▼) -> Scroll to next section
@@ -884,27 +1030,16 @@
     heroScrollCue?.addEventListener("click", (e) => {
       e.preventDefault();
       const cel = $("celebrants");
-      cel?.scrollIntoView({ behavior: "smooth", block: "start" });
+      scrollToSectionElement(cel);
     });
 
-    // Nav dots click (Manual shortcut to section)
-    navDots.forEach((dot) => {
-      dot.addEventListener("click", (e) => {
-        e.preventDefault();
-        const targetId = dot.getAttribute("href");
-        const targetEl = document.querySelector(targetId);
-        if (targetEl) {
-          targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-      });
-    });
-
-    // Active Navigation indicator using IntersectionObserver (Purely tracking, NO scroll side effects)
+    // Active Navigation indicator using IntersectionObserver
     setupNavIntersectionObserver();
   }
 
   function setupNavIntersectionObserver() {
     const navDots = $$(".quick-nav__dot");
+    const toggleIcon = $("quickNavToggleIcon");
     const sectionEls = sectionList.map((id) => $(id)).filter(Boolean);
 
     if (!sectionEls.length) return;
@@ -918,10 +1053,14 @@
               const href = dot.getAttribute("href");
               dot.classList.toggle("active", href === `#${id}`);
             });
+            // Update toggle button icon to reflect current active section
+            if (toggleIcon && sectionIcons[id]) {
+              toggleIcon.textContent = sectionIcons[id];
+            }
           }
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0.25 }
     );
 
     sectionEls.forEach((el) => observer.observe(el));

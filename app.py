@@ -330,44 +330,16 @@ st.markdown(
       .block-container, [data-testid="stMainBlockContainer"], [data-testid="stAppViewBlockContainer"] {
         padding: 0 !important; max-width: 100% !important; margin: 0 !important;
       }
-      iframe, iframe[title*="birthday_invitation"], [data-testid="stCustomComponentV1"] iframe {
+      iframe, [data-testid="stCustomComponentV1"] iframe {
         position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
         width: 100vw !important; height: 100vh !important; height: 100dvh !important;
         border: 0 !important; z-index: 999990 !important; background: transparent;
         overflow: auto !important;
+        pointer-events: auto !important;
       }
     </style>
     """,
     unsafe_allow_html=True,
-)
-
-# Unlock iframe scrolling from parent document
-components.html(
-    """
-    <script>
-      (function() {
-        function unlockIframe() {
-          try {
-            const pDoc = window.parent.document;
-            const iframes = pDoc.querySelectorAll("iframe");
-            iframes.forEach(f => {
-              if (f.src && f.src.includes("birthday_invitation")) {
-                if (f.getAttribute("scrolling") === "no") {
-                  f.removeAttribute("scrolling");
-                  f.setAttribute("scrolling", "yes");
-                }
-                f.style.overflow = "auto";
-              }
-            });
-          } catch(e) {}
-        }
-        unlockIframe();
-        setInterval(unlockIframe, 800);
-      })();
-    </script>
-    """,
-    height=0,
-    width=0,
 )
 
 _invitation = components.declare_component("birthday_invitation", path=str(FRONTEND_DIR))

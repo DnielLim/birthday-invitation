@@ -12,7 +12,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Great+Vibes&family=Outfit:wght@300;400;500;600;700&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="./style.css?v=20261004d" />
+  <link rel="stylesheet" href="./style.css?v=20261004f" />
 </head>
 
 <body>
@@ -36,7 +36,7 @@
         <span class="script" data-p2>Vinella</span>
       </h2>
       <p class="intro__sub" id="introSub"><span data-possessive>Alvien &amp; Vinella's</span> Birthday Celebration</p>
-      <button class="btn btn--gold btn--xl intro__btn" id="openBtn" type="button">
+      <button class="btn btn--gold btn--xl intro__btn" id="openBtn" type="button" aria-label="Open Invitation" onclick="triggerOpenInvitation(event)">
         <span>Open Invitation ✨</span>
       </button>
       <p class="intro__hint" id="introHint">🔊 Best experienced with sound on</p>
@@ -366,29 +366,62 @@
     </section>
   </main>
 
-  <!-- ====== Floating Left Navigation (Manual Shortcut Navigation) ====== -->
-  <nav class="quick-nav" id="quickNav" aria-label="Quick Section Navigation">
-    <button class="quick-nav__btn" id="scrollTopBtn" type="button" title="Bagian Sebelumnya ⬆️"
-      aria-label="Previous section">
-      <span>▲</span>
-    </button>
-    <div class="quick-nav__pill">
-      <a href="#intro" class="quick-nav__dot active" title="Sampul / Opening" aria-label="Cover"><span>🏠</span></a>
-      <a href="#invitation" class="quick-nav__dot" title="Kartu Undangan" aria-label="Invitation"><span>💌</span></a>
-      <a href="#celebrants" class="quick-nav__dot" title="Birthday Celebrants"
-        aria-label="Celebrants"><span>👥</span></a>
-      <a href="#cake" class="quick-nav__dot" title="Birthday Cake" aria-label="Cake"><span>🎂</span></a>
-      <a href="#details" class="quick-nav__dot" title="Save The Date" aria-label="Date"><span>📅</span></a>
-      <a href="#location" class="quick-nav__dot" title="Lokasi Acara" aria-label="Location"><span>📍</span></a>
-      <a href="#memories" class="quick-nav__dot" title="Galeri Kenangan" aria-label="Memories"><span>📸</span></a>
-      <a href="#rsvp" class="quick-nav__dot" title="Konfirmasi RSVP" aria-label="RSVP"><span>✉️</span></a>
-      <a href="#final" class="quick-nav__dot" title="Penutup Acara" aria-label="Closing"><span>❤️</span></a>
+  <!-- ====== Floating Left Navigation (Slide-in / Slide-out Sidebar with Side Arrow) ====== -->
+  <aside class="quick-nav" id="quickNav" aria-label="Quick Section Navigation">
+    <div class="quick-nav__drawer" id="quickNavDrawer">
+      <button class="quick-nav__btn" id="scrollTopBtn" type="button" title="Bagian Sebelumnya ⬆️"
+        aria-label="Previous section">
+        <span>▲</span>
+      </button>
+      <div class="quick-nav__pill">
+        <a href="#intro" class="quick-nav__dot active" title="Sampul / Opening" aria-label="Cover">
+          <span class="dot-icon">🏠</span>
+          <span class="dot-label">Sampul</span>
+        </a>
+        <a href="#invitation" class="quick-nav__dot" title="Kartu Undangan" aria-label="Invitation">
+          <span class="dot-icon">💌</span>
+          <span class="dot-label">Undangan</span>
+        </a>
+        <a href="#celebrants" class="quick-nav__dot" title="Birthday Celebrants" aria-label="Celebrants">
+          <span class="dot-icon">👥</span>
+          <span class="dot-label">Profil</span>
+        </a>
+        <a href="#cake" class="quick-nav__dot" title="Birthday Cake" aria-label="Cake">
+          <span class="dot-icon">🎂</span>
+          <span class="dot-label">Kue</span>
+        </a>
+        <a href="#details" class="quick-nav__dot" title="Save The Date" aria-label="Date">
+          <span class="dot-icon">📅</span>
+          <span class="dot-label">Waktu</span>
+        </a>
+        <a href="#location" class="quick-nav__dot" title="Lokasi Acara" aria-label="Location">
+          <span class="dot-icon">📍</span>
+          <span class="dot-label">Lokasi</span>
+        </a>
+        <a href="#memories" class="quick-nav__dot" title="Galeri Kenangan" aria-label="Memories">
+          <span class="dot-icon">📸</span>
+          <span class="dot-label">Galeri</span>
+        </a>
+        <a href="#rsvp" class="quick-nav__dot" title="Konfirmasi RSVP" aria-label="RSVP">
+          <span class="dot-icon">✉️</span>
+          <span class="dot-label">RSVP</span>
+        </a>
+        <a href="#final" class="quick-nav__dot" title="Penutup Acara" aria-label="Closing">
+          <span class="dot-icon">❤️</span>
+          <span class="dot-label">Penutup</span>
+        </a>
+      </div>
+      <button class="quick-nav__btn" id="scrollBottomBtn" type="button" title="Bagian Berikutnya ⬇️"
+        aria-label="Next section">
+        <span>▼</span>
+      </button>
     </div>
-    <button class="quick-nav__btn" id="scrollBottomBtn" type="button" title="Bagian Berikutnya ⬇️"
-      aria-label="Next section">
-      <span>▼</span>
+
+    <!-- Tanda panah ke samping (Side Arrow Toggle) -->
+    <button class="quick-nav__arrow-btn" id="quickNavArrowBtn" type="button" title="Tutup / Buka Navigasi ke Samping" aria-label="Toggle navigation to the side">
+      <span class="quick-nav__arrow-icon" id="quickNavArrowIcon">◀</span>
     </button>
-  </nav>
+  </aside>
 
   <!-- ====== Floating music player ====== -->
   <aside class="player is-collapsed" id="player" aria-label="Birthday Playlist">
@@ -432,7 +465,7 @@
   <script src="./js/scene3d.js"></script>
   <script src="./js/cake3d.js"></script>
   <script src="./js/player.js"></script>
-  <script src="./js/main.js?v=20261004d"></script>
+  <script src="./js/main.js?v=20261004f"></script>
 </body>
 
 </html>
