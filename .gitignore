@@ -1,0 +1,19 @@
+# Python & Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Streamlit secrets & local data
+.streamlit/secrets.toml
+data/
+*.csv
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
