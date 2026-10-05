@@ -376,6 +376,11 @@
       console.warn("Confetti visual warning:", err);
     }
 
+    // Unlock the entire page for scrolling
+    hasOpened = true;
+    if (document.body) document.body.classList.remove("is-locked");
+    if (document.documentElement) document.documentElement.classList.remove("is-locked");
+
     // 3. Smooth scroll down to main invitation card #invitation
     const target = $("invitation");
     if (target) {

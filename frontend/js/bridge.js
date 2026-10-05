@@ -114,6 +114,11 @@
   window.smoothScrollTo = smoothScrollTo;
 
   function handleCustomWheel(e) {
+    if (document.body && document.body.classList.contains("is-locked")) {
+      if (e.cancelable) e.preventDefault();
+      return;
+    }
+
     // Let internally scrollable elements scroll natively
     let el = e.target;
     while (el && el !== document.body && el !== document.documentElement) {
@@ -177,6 +182,13 @@
 
   window.addEventListener("wheel", handleCustomWheel, { passive: false });
 
+  // Prevent touch swipe scrolling while cover is locked
+  window.addEventListener("touchmove", (e) => {
+    if (document.body && document.body.classList.contains("is-locked")) {
+      if (e.cancelable) e.preventDefault();
+    }
+  }, { passive: false });
+
   // Cancel any ongoing programmatic scroll the microsecond user taps or touches any button/screen
   function stopActiveScroll() {
     isScrollAnimating = false;
@@ -198,6 +210,9 @@
       window.parent.addEventListener("wheel", handleCustomWheel, { passive: false });
 
       window.parent.addEventListener("keydown", (e) => {
+        if (document.body && document.body.classList.contains("is-locked")) {
+          return;
+        }
         const tag = (window.parent.document.activeElement && window.parent.document.activeElement.tagName) || "";
         if (tag === "INPUT" || tag === "TEXTAREA") return;
 
@@ -227,6 +242,9 @@
         if (e.touches && e.touches[0]) ty = e.touches[0].clientY;
       }, { passive: true });
       window.parent.addEventListener("touchmove", (e) => {
+        if (document.body && document.body.classList.contains("is-locked")) {
+          return;
+        }
         if (e.touches && e.touches[0]) {
           const dy = ty - e.touches[0].clientY;
           ty = e.touches[0].clientY;

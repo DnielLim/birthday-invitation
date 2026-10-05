@@ -48,6 +48,26 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Locked state on opening cover screen before user clicks Open Invitation */
+html.is-locked, body.is-locked {
+  overflow: hidden !important;
+  height: 100% !important;
+  height: 100dvh !important;
+  touch-action: none !important;
+}
+body.is-locked .quick-nav {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+body.is-locked .player {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
 /* Custom Luxury Scrollbar */
 ::-webkit-scrollbar {
   width: 9px;
