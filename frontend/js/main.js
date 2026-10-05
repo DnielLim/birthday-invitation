@@ -345,8 +345,8 @@
     if (now - lastOpenTrigger < 800) return;
     lastOpenTrigger = now;
 
-    if (typeof window.cancelActiveScroll === "function") {
-      window.cancelActiveScroll();
+    if (typeof window.protectScrollAnimation === "function") {
+      window.protectScrollAnimation(1500);
     }
 
     // 1. Start background playlist on click gesture with safety
@@ -380,28 +380,53 @@
     hasOpened = true;
     if (document.body) document.body.classList.remove("is-locked");
     if (document.documentElement) document.documentElement.classList.remove("is-locked");
+    // Force layout reflow so scrollHeight and offsets reflect full page height
+    void (document.body && document.body.offsetHeight);
 
     // 3. Smooth scroll down to main invitation card #invitation
     const target = $("invitation");
     if (target) {
-      try {
-        const rect = target.getBoundingClientRect();
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-        const targetY = rect.top + scrollTop;
-
-        if (typeof window.smoothScrollTo === "function") {
-          window.smoothScrollTo(targetY, 550);
-        } else {
-          window.scrollTo({ top: targetY, behavior: "smooth" });
-        }
-      } catch (err) {
-        console.warn("Smooth scroll fallback:", err);
+      const executeScroll = () => {
         try {
-          target.scrollIntoView({ behavior: "smooth", block: "start" });
-        } catch (_) {
-          window.scrollTo(0, target.offsetTop || 600);
+          const rect = target.getBoundingClientRect();
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+          const targetY = rect.top + scrollTop;
+
+          if (typeof window.smoothScrollTo === "function") {
+            window.smoothScrollTo(targetY, 650);
+          } else {
+            window.scrollTo({ top: targetY, behavior: "smooth" });
+          }
+        } catch (err) {
+          console.warn("Smooth scroll fallback:", err);
+          try {
+            target.scrollIntoView({ behavior: "smooth", block: "start" });
+          } catch (_) {
+            window.scrollTo(0, target.offsetTop || 600);
+          }
         }
+      };
+
+      // Delay slightly so iOS Safari finishes unlocking layout tree
+      if (typeof window.requestAnimationFrame === "function") {
+        window.requestAnimationFrame(() => {
+          setTimeout(executeScroll, 35);
+        });
+      } else {
+        setTimeout(executeScroll, 50);
       }
+
+      // iOS failsafe: if scroll hasn't moved after 350ms, trigger native smooth scroll
+      setTimeout(() => {
+        const currentY = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        if (currentY < 120 && target) {
+          try {
+            target.scrollIntoView({ behavior: "smooth", block: "start" });
+          } catch (_) {
+            window.scrollTo(0, target.offsetTop || 600);
+          }
+        }
+      }, 380);
     }
   }
   // Expose globally so inline onclick on #openBtn works immediately without delay
