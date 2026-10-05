@@ -177,7 +177,7 @@
     if (topNameEl) topNameEl.textContent = cleanP1;
     if (btmNameEl) btmNameEl.textContent = cleanP2;
     const introSub = document.getElementById("introSub");
-    if (introSub) introSub.innerHTML = `${cleanP1} &amp; ${cleanP2} · Birthday Celebration`;
+    if (introSub) introSub.textContent = "Birthday Celebration";
 
     // Monograms
     const init1 = (p1Plain || "A").charAt(0).toUpperCase();
