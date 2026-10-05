@@ -235,7 +235,7 @@ body.no-webgl .css-balloons { display: block; }
 }
 .intro__names .amp { font-size: .55em; }
 .intro__sub { font-family: var(--font-serif); font-size: clamp(1.1rem, 2.8vw, 1.7rem); letter-spacing: .12em; text-transform: uppercase; margin: .4rem 0 2.2rem; color: var(--ink); }
-.intro__btn, .intro__hint { opacity: 1; }
+.intro__btn { opacity: 1; }
 #openBtn, .intro__btn, #celebrateBtn, button, .btn, .choice, .quick-nav__btn, .quick-nav__dot, .quick-nav__arrow-btn, .map-load, #finalBackTopBtn {
   cursor: pointer !important;
   pointer-events: auto !important;

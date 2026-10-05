@@ -317,7 +317,6 @@
     const introEyebrow = $("introEyebrow");
     const introNames = $("introNames");
     const introSub = $("introSub");
-    const introHint = $("introHint");
 
     // Robust click and pointerup handling without preventDefault delay
     const handleOpen = (e) => {
@@ -380,11 +379,6 @@
       openBtn,
       { opacity: 1, scale: 1, duration: 1, ease: "back.out(1.7)" },
       "+=0.2"
-    )
-    .to(
-      introHint,
-      { opacity: 0.85, duration: 0.8 },
-      "-=0.4"
     );
   }
 
