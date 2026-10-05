@@ -173,6 +173,9 @@
   }, { passive: true });
 
   window.addEventListener("wheel", handleCustomWheel, { passive: false });
+  window.addEventListener("touchstart", () => {
+    isScrollAnimating = false;
+  }, { passive: true });
 
   window.StreamlitBridge.ready();
   window.StreamlitBridge.setHeight(window.innerHeight || 800);

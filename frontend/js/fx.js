@@ -26,8 +26,14 @@
 
     resize() {
       const r = this.fixed ? { width: innerWidth, height: innerHeight } : this.canvas.getBoundingClientRect();
-      this.w = Math.max(1, r.width);
-      this.h = Math.max(1, r.height);
+      const newW = Math.max(1, Math.round(r.width));
+      const newH = Math.max(1, Math.round(r.height));
+      // Avoid clearing canvas and causing mobile scroll flicker if size hasn't meaningfully changed
+      if (this.w && Math.abs(this.w - newW) < 2 && Math.abs(this.h - newH) < 80) {
+        return;
+      }
+      this.w = newW;
+      this.h = newH;
       this.canvas.width = this.w * this.dpr;
       this.canvas.height = this.h * this.dpr;
       this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);

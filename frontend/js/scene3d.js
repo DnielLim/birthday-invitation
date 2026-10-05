@@ -321,14 +321,15 @@
     }
 
     burst() {
-      // Send half the balloons to the bottom so a fresh wave rises together.
-      this.items.forEach((it, i) => {
-        if (i % 2 === 0) {
-          const hh = this.halfHeightAt(it.obj.position.z);
+      // Smooth burst without popping visible balloons out of thin air:
+      this.items.forEach((it) => {
+        const hh = this.halfHeightAt(it.obj.position.z);
+        // Only recycle balloons that are already out of view above the top
+        if (it.obj.position.y > hh) {
           it.obj.position.y = -hh - rand(1, 6);
         }
       });
-      this.boost(5, 3200);
+      this.boost(4.5, 3000);
     }
 
     zoomTo(z, duration = 3) {
@@ -337,8 +338,15 @@
     }
 
     onResize() {
-      this.renderer.setSize(innerWidth, innerHeight, false);
-      this.camera.aspect = innerWidth / innerHeight;
+      const newW = innerWidth;
+      const newH = innerHeight;
+      if (this.lastW && Math.abs(this.lastW - newW) < 2 && Math.abs(this.lastH - newH) < 80) {
+        return;
+      }
+      this.lastW = newW;
+      this.lastH = newH;
+      this.renderer.setSize(newW, newH, false);
+      this.camera.aspect = newW / newH;
       this.camera.updateProjectionMatrix();
     }
 

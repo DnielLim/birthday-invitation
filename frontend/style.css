@@ -195,7 +195,7 @@ body.no-webgl .css-balloons { display: block; }
 .intro__names .amp { font-size: .55em; }
 .intro__sub { font-family: var(--font-serif); font-size: clamp(1.1rem, 2.8vw, 1.7rem); letter-spacing: .12em; text-transform: uppercase; margin: .4rem 0 2.2rem; color: var(--ink); }
 .intro__btn, .intro__hint { opacity: 1; }
-#openBtn, .intro__btn {
+#openBtn, .intro__btn, #celebrateBtn {
   position: relative !important;
   z-index: 100 !important;
   cursor: pointer !important;
@@ -205,7 +205,7 @@ body.no-webgl .css-balloons { display: block; }
   user-select: none !important;
   -webkit-user-select: none !important;
 }
-#openBtn *, .intro__btn * {
+#openBtn *, .intro__btn *, #celebrateBtn * {
   pointer-events: none !important;
 }
 
@@ -495,9 +495,16 @@ body.no-webgl .css-cake { display: block; }
 }
 
 /* ---------- Celebrate ---------- */
-.celebrate { text-align: center; padding-top: 3rem; padding-bottom: 3rem; }
-.celebrate__msg { font-family: var(--font-script); font-size: clamp(2.4rem, 7vw, 4.2rem); margin: 1.6rem 0 0; line-height: 1.2; opacity: 0; transform: scale(.8);
-  background: linear-gradient(120deg, #c4497f, #8a5ad9, #d19a35); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.celebrate { position: relative; z-index: 20; text-align: center; padding-top: 3rem; padding-bottom: 3rem; }
+.celebrate .btn { transition: transform .25s var(--ease-out), box-shadow .4s var(--ease-out), background .3s; }
+.celebrate__msg {
+  font-family: var(--font-script); font-size: clamp(2.4rem, 7vw, 4.2rem); margin: 1.6rem 0 0; line-height: 1.2;
+  opacity: 0; transform: scale(.8) translateZ(0);
+  background: linear-gradient(120deg, #c4497f, #8a5ad9, #d19a35);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  -webkit-backface-visibility: hidden; backface-visibility: hidden;
+  will-change: transform, opacity;
+}
 
 /* ---------- Final ---------- */
 .final {
@@ -565,7 +572,7 @@ body.no-webgl .css-cake { display: block; }
   z-index: 70;
   display: flex;
   align-items: center;
-  pointer-events: auto;
+  pointer-events: none;
   transition: transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -577,11 +584,13 @@ body.no-webgl .css-cake { display: block; }
   gap: 0.45rem;
   padding-left: max(10px, env(safe-area-inset-left));
   padding-right: 6px;
+  pointer-events: auto;
   transition: opacity 0.3s ease;
 }
 
 /* Tanda panah ke samping (Side Arrow Tab) */
 .quick-nav__arrow-btn {
+  pointer-events: auto;
   width: 32px;
   height: 52px;
   border-radius: 0 16px 16px 0;

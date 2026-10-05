@@ -259,23 +259,18 @@
     const introSub = $("introSub");
     const introHint = $("introHint");
 
-    // Immediately bind click and touch events to avoid delay while intro animation plays
-    let openTriggered = false;
+    // Robust click and pointerup handling without preventDefault delay
     const handleOpen = (e) => {
-      if (e) {
-        if (e.type === "touchend") {
-          try { e.preventDefault(); } catch (_) {}
-        }
-      }
-      if (openTriggered) return;
-      openTriggered = true;
-      setTimeout(() => { openTriggered = false; }, 800);
-      triggerOpenInvitation();
+      triggerOpenInvitation(e);
     };
 
     if (openBtn) {
       openBtn.addEventListener("click", handleOpen);
-      openBtn.addEventListener("touchend", handleOpen, { passive: false });
+      openBtn.addEventListener("pointerup", (e) => {
+        if (e.pointerType === "touch" || e.pointerType === "pen") {
+          handleOpen(e);
+        }
+      });
     }
 
     // Scroll down cue on opening screen
@@ -333,8 +328,16 @@
     );
   }
 
+  let lastOpenTrigger = 0;
   /* When "Open Invitation ✨" or scroll cue is clicked */
-  function triggerOpenInvitation() {
+  function triggerOpenInvitation(e) {
+    if (e) {
+      try { e.stopPropagation(); } catch (_) {}
+    }
+    const now = Date.now();
+    if (now - lastOpenTrigger < 800) return;
+    lastOpenTrigger = now;
+
     // 1. Start background playlist on click gesture with safety
     try {
       if (player && typeof player.start === "function") {
@@ -371,18 +374,17 @@
         const targetY = rect.top + scrollTop;
 
         if (typeof window.smoothScrollTo === "function") {
-          window.smoothScrollTo(targetY, 500);
+          window.smoothScrollTo(targetY, 550);
         } else {
           window.scrollTo({ top: targetY, behavior: "smooth" });
         }
       } catch (err) {
         console.warn("Smooth scroll fallback:", err);
-      }
-
-      try {
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
-      } catch (err) {
-        target.scrollIntoView();
+        try {
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+        } catch (_) {
+          window.scrollTo(0, target.offsetTop || 600);
+        }
       }
     }
   }
@@ -812,40 +814,64 @@
   function initCelebrateButton() {
     const btn = $("celebrateBtn");
     const msg = $("celebrateMsg");
+    if (!btn) return;
 
-    btn?.addEventListener("click", () => {
+    let lastCelebrateTrigger = 0;
+    function triggerCelebrate(e) {
+      if (e) {
+        try { e.stopPropagation(); } catch (_) {}
+      }
+      const now = Date.now();
+      if (now - lastCelebrateTrigger < 800) return;
+      lastCelebrateTrigger = now;
+
+      // Smoothly stop pulse without jarring visual jump
+      btn.style.animation = "none";
       btn.classList.remove("btn--pulse");
 
-      // 1. Confetti Cannons + Fireworks Show + Balloon Burst
+      // 1. Confetti Cannons + Fireworks Show + Balloon Boost
       if (fx) {
-        fx.confettiCannons();
-        fx.confettiRain(5000);
-        fx.fireworksShow(5000, 280);
-        fx.sparkles(80);
+        if (typeof fx.confettiCannons === "function") fx.confettiCannons();
+        if (typeof fx.confettiRain === "function") fx.confettiRain(4000);
+        if (typeof fx.fireworksShow === "function") fx.fireworksShow(4500, 300);
+        if (typeof fx.sparkles === "function") fx.sparkles(70);
       }
 
-      if (bgScene) {
+      if (bgScene && typeof bgScene.burst === "function") {
         bgScene.burst();
       }
 
       // 2. Play music if not playing
-      if (player && !player.playing) {
-        player.play();
+      try {
+        if (player && !player.playing && typeof player.play === "function") {
+          player.play();
+        }
+      } catch (err) {
+        console.warn("Audio play warning:", err);
       }
 
-      // 3. Reveal message
+      // 3. Reveal message smoothly with GPU hardware acceleration
       if (window.gsap && msg) {
         gsap.to(msg, {
           opacity: 1,
           scale: 1,
-          duration: 1.2,
-          ease: "elastic.out(1, 0.6)",
+          duration: 1.1,
+          ease: "back.out(1.4)",
         });
       } else if (msg) {
         msg.style.opacity = "1";
         msg.style.transform = "scale(1)";
       }
+    }
+
+    btn.addEventListener("click", triggerCelebrate);
+    btn.addEventListener("pointerup", (e) => {
+      if (e.pointerType === "touch" || e.pointerType === "pen") {
+        triggerCelebrate(e);
+      }
     });
+
+    window.triggerCelebrate = triggerCelebrate;
 
     // Final section ambient fireworks
     const finalSection = $("final");
