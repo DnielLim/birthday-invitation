@@ -80,11 +80,12 @@
   let animDuration = 400;
   let isScrollAnimating = false;
 
-  function easeOutCubic(t) {
-    return 1 - Math.pow(1 - t, 3);
+  // iOS Apple-style quartic ease-out: smooth, fluid and natural deceleration
+  function easeOutQuart(t) {
+    return 1 - Math.pow(1 - t, 4);
   }
 
-  function smoothScrollTo(target, duration = 400) {
+  function smoothScrollTo(target, duration = 450) {
     const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
     targetScrollY = Math.max(0, Math.min(target, maxScroll));
     animStartScrollY = window.scrollY;
@@ -97,9 +98,9 @@
         if (!isScrollAnimating) return;
         const elapsed = now - animStartTime;
         const progress = Math.min(1, elapsed / animDuration);
-        const ease = easeOutCubic(progress);
+        const ease = easeOutQuart(progress);
         const currentY = animStartScrollY + (targetScrollY - animStartScrollY) * ease;
-        window.scrollTo(0, currentY);
+        window.scrollTo({ top: currentY, behavior: "auto" });
 
         if (progress < 1) {
           requestAnimationFrame(step);
@@ -154,9 +155,9 @@
         if (!isScrollAnimating) return;
         const elapsed = now - animStartTime;
         const progress = Math.min(1, elapsed / animDuration);
-        const ease = easeOutCubic(progress);
+        const ease = easeOutQuart(progress);
         const currentY = animStartScrollY + (targetScrollY - animStartScrollY) * ease;
-        window.scrollTo(0, currentY);
+        window.scrollTo({ top: currentY, behavior: "auto" });
 
         if (progress < 1) {
           requestAnimationFrame(step);
