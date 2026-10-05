@@ -31,7 +31,7 @@ import streamlit.components.v1 as components
 BIRTHDAY_PERSON_1 = "Alvien"
 BIRTHDAY_PERSON_2 = "Vinella"
 
-EVENT_TITLE = "Birthday Celebration 🎂"
+EVENT_TITLE = "Birthday Party 🎂"
 EVENT_SUBTITLE = "Two Birthdays, One Special Celebration ✨"
 
 EVENT_DATE = "Sabtu, 17 Oktober 2026"     # shown on the invitation
@@ -113,7 +113,7 @@ MAX_IMAGE_SIDE = 1400          # px — images are downscaled for fast loading
 PORTRAIT_SIDE = 900
 
 st.set_page_config(
-    page_title=f"{BIRTHDAY_PERSON_1} & {BIRTHDAY_PERSON_2} · Birthday Celebration 🎂",
+    page_title=f"{BIRTHDAY_PERSON_1} & {BIRTHDAY_PERSON_2} · Birthday Party 🎂",
     page_icon="🎂",
     layout="wide",
     initial_sidebar_state="collapsed",

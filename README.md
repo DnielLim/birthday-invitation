@@ -124,7 +124,7 @@ Seluruh konfigurasi utama undangan dapat diganti dengan sangat mudah di bagian a
 BIRTHDAY_PERSON_1 = "Alvien"
 BIRTHDAY_PERSON_2 = "Vinella"
 
-EVENT_TITLE = "Birthday Celebration 🎂"
+EVENT_TITLE = "Birthday Party 🎂"
 EVENT_SUBTITLE = "Two Birthdays, One Special Celebration ✨"
 
 EVENT_DATE = "Sabtu, 17 Oktober 2026"     # Teks tanggal kartu

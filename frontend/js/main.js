@@ -1,5 +1,5 @@
 /* =========================================================================
-   Alvien & Vinella — 3D Birthday Celebration · Main Script
+   Alvien & Vinella — 3D Birthday Party · Main Script
    ========================================================================= */
 (function () {
   "use strict";
@@ -11,7 +11,7 @@
   let config = {
     person1: "Alvien",
     person2: "Vinella",
-    title: "Birthday Celebration 🎂",
+    title: "Birthday Party 🎂",
     subtitle: "Two Birthdays, One Special Celebration ✨",
     date: "Sabtu, 17 Oktober 2026",
     time: "15:30 WIB - Selesai",
@@ -566,7 +566,7 @@
     const icsBtn = $("icsBtn");
     const gcalBtn = $("gcalBtn");
 
-    const title = `${config.person1} & ${config.person2}'s Birthday Celebration 🎂`;
+    const title = `${config.person1} & ${config.person2}'s Birthday Party 🎂`;
     const details = `${config.subtitle}\n\nVenue: ${config.venue}\n${config.address}`;
     const location = `${config.venue}, ${config.address}`;
 
@@ -596,7 +596,7 @@
         const icsContent = [
           "BEGIN:VCALENDAR",
           "VERSION:2.0",
-          "PRODID:-//Birthday Celebration//Alvien & Vinella//EN",
+          "PRODID:-//Birthday Party//Alvien & Vinella//EN",
           "CALSCALE:GREGORIAN",
           "BEGIN:VEVENT",
           `SUMMARY:${title}`,
