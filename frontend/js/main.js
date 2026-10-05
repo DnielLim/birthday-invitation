@@ -389,7 +389,12 @@
     }
   }
   // Expose globally so inline onclick on #openBtn works immediately without delay
+  window._triggerOpenInvitationImpl = triggerOpenInvitation;
   window.triggerOpenInvitation = triggerOpenInvitation;
+  if (window._pendingOpenInvitation) {
+    window._pendingOpenInvitation = false;
+    setTimeout(() => triggerOpenInvitation(), 50);
+  }
 
   /* =========================================================================
      4. 3D Tilt for Cards (Invitation, Celebrants, Memories)
