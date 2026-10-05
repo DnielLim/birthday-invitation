@@ -94,6 +94,7 @@
     if (!isScrollAnimating) {
       isScrollAnimating = true;
       function step(now) {
+        if (!isScrollAnimating) return;
         const elapsed = now - animStartTime;
         const progress = Math.min(1, elapsed / animDuration);
         const ease = easeOutCubic(progress);
@@ -150,6 +151,7 @@
     if (!isScrollAnimating) {
       isScrollAnimating = true;
       function step(now) {
+        if (!isScrollAnimating) return;
         const elapsed = now - animStartTime;
         const progress = Math.min(1, elapsed / animDuration);
         const ease = easeOutCubic(progress);
@@ -173,9 +175,15 @@
   }, { passive: true });
 
   window.addEventListener("wheel", handleCustomWheel, { passive: false });
-  window.addEventListener("touchstart", () => {
+
+  // Cancel any ongoing programmatic scroll the microsecond user taps or touches any button/screen
+  function stopActiveScroll() {
     isScrollAnimating = false;
-  }, { passive: true });
+  }
+  window.cancelActiveScroll = stopActiveScroll;
+  window.addEventListener("touchstart", stopActiveScroll, { passive: true, capture: true });
+  window.addEventListener("pointerdown", stopActiveScroll, { passive: true, capture: true });
+  window.addEventListener("mousedown", stopActiveScroll, { passive: true, capture: true });
 
   window.StreamlitBridge.ready();
   window.StreamlitBridge.setHeight(window.innerHeight || 800);

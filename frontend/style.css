@@ -195,9 +195,7 @@ body.no-webgl .css-balloons { display: block; }
 .intro__names .amp { font-size: .55em; }
 .intro__sub { font-family: var(--font-serif); font-size: clamp(1.1rem, 2.8vw, 1.7rem); letter-spacing: .12em; text-transform: uppercase; margin: .4rem 0 2.2rem; color: var(--ink); }
 .intro__btn, .intro__hint { opacity: 1; }
-#openBtn, .intro__btn, #celebrateBtn {
-  position: relative !important;
-  z-index: 100 !important;
+#openBtn, .intro__btn, #celebrateBtn, button, .btn, .choice, .quick-nav__btn, .quick-nav__dot, .quick-nav__arrow-btn, .map-load, #finalBackTopBtn {
   cursor: pointer !important;
   pointer-events: auto !important;
   touch-action: manipulation !important;
@@ -205,7 +203,11 @@ body.no-webgl .css-balloons { display: block; }
   user-select: none !important;
   -webkit-user-select: none !important;
 }
-#openBtn *, .intro__btn *, #celebrateBtn * {
+#openBtn, .intro__btn, #celebrateBtn {
+  position: relative !important;
+  z-index: 100 !important;
+}
+#openBtn *, .intro__btn *, #celebrateBtn *, .btn *, .quick-nav__btn *, .quick-nav__arrow-btn *, #finalBackTopBtn * {
   pointer-events: none !important;
 }
 

@@ -69,6 +69,13 @@
     initGoogleFormSetup();
     initKeyboardNavigation();
     setupIntersectionObserver();
+    // Ensure any ongoing scroll halts the microsecond any button is pressed
+    document.addEventListener("pointerdown", (e) => {
+      const btn = e.target.closest("button, .btn, .choice, [role='button'], a, .quick-nav__dot, .quick-nav__arrow-btn");
+      if (btn && typeof window.cancelActiveScroll === "function") {
+        window.cancelActiveScroll();
+      }
+    }, { capture: true, passive: true });
 
     // Listen to Streamlit config if running inside Streamlit
     if (window.StreamlitBridge) {
@@ -337,6 +344,10 @@
     const now = Date.now();
     if (now - lastOpenTrigger < 800) return;
     lastOpenTrigger = now;
+
+    if (typeof window.cancelActiveScroll === "function") {
+      window.cancelActiveScroll();
+    }
 
     // 1. Start background playlist on click gesture with safety
     try {
@@ -830,6 +841,10 @@
       if (now - lastCelebrateTrigger < 800) return;
       lastCelebrateTrigger = now;
 
+      if (typeof window.cancelActiveScroll === "function") {
+        window.cancelActiveScroll();
+      }
+
       // Smoothly stop pulse without jarring visual jump
       btn.style.animation = "none";
       btn.classList.remove("btn--pulse");
@@ -1043,13 +1058,17 @@
       scrollPrevSection();
     });
 
-    finalBackTop?.addEventListener("click", () => {
+    const handleFinalBackTop = (e) => {
+      if (e) { try { e.preventDefault(); e.stopPropagation(); } catch (_) {} }
+      if (typeof window.cancelActiveScroll === "function") window.cancelActiveScroll();
       if (typeof window.smoothScrollTo === "function") {
-        window.smoothScrollTo(0, 450);
+        window.smoothScrollTo(0, 500);
       } else {
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
-    });
+    };
+    finalBackTop?.addEventListener("click", handleFinalBackTop);
+    finalBackTop?.addEventListener("pointerup", handleFinalBackTop);
 
     // Bottom button (▼) -> Scroll to next section
     bottomBtn?.addEventListener("click", (e) => {
