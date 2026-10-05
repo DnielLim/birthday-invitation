@@ -9,8 +9,8 @@
 
   // App state
   let config = {
-    person1: "Alvien",
-    person2: "Vinella",
+    person1: "Alvien's 30<sup class=\"sup-th\">th</sup>",
+    person2: "Vinella's 2<sup class=\"sup-th\">th</sup>",
     title: "Birthday Celebration 🎂",
     subtitle: "Two Birthdays, One Special Celebration ✨",
     date: "Sabtu, 17 Oktober 2026",
@@ -151,10 +151,16 @@
   function applyConfig(cfg) {
     config = Object.assign({}, config, cfg);
 
+    const stripHtml = (s) => (s ? String(s).replace(/<[^>]*>/g, "") : "");
+    const p1Display = config.person1Html || config.person1 || "Alvien's 30<sup class=\"sup-th\">th</sup>";
+    const p2Display = config.person2Html || config.person2 || "Vinella's 2<sup class=\"sup-th\">th</sup>";
+    const p1Plain = stripHtml(p1Display);
+    const p2Plain = stripHtml(p2Display);
+
     // Replace text elements
-    $$("[data-p1]").forEach((el) => (el.textContent = config.person1));
-    $$("[data-p2]").forEach((el) => (el.textContent = config.person2));
-    $$("[data-possessive]").forEach((el) => (el.textContent = `${config.person1} & ${config.person2}'s`));
+    $$("[data-p1]").forEach((el) => (el.innerHTML = p1Display));
+    $$("[data-p2]").forEach((el) => (el.innerHTML = p2Display));
+    $$("[data-possessive]").forEach((el) => (el.innerHTML = `${p1Display} &amp; ${p2Display}`));
     $$("[data-title]").forEach((el) => (el.textContent = config.title));
     $$("[data-subtitle]").forEach((el) => (el.textContent = config.subtitle));
     $$("[data-date]").forEach((el) => (el.textContent = config.date));
@@ -165,8 +171,8 @@
     $$("[data-message]").forEach((el) => (el.textContent = `“${config.message}”`));
 
     // Monograms
-    const init1 = (config.person1 || "A").charAt(0).toUpperCase();
-    const init2 = (config.person2 || "V").charAt(0).toUpperCase();
+    const init1 = (p1Plain || "A").charAt(0).toUpperCase();
+    const init2 = (p2Plain || "V").charAt(0).toUpperCase();
     const m1 = $("person1Card")?.querySelector("[data-initial1]");
     const m2 = $("person2Card")?.querySelector("[data-initial2]");
     if (m1) m1.textContent = init1;

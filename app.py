@@ -28,8 +28,8 @@ import streamlit.components.v1 as components
 # 🎉 CONFIGURATION — edit everything here
 # =============================================================================
 
-BIRTHDAY_PERSON_1 = "Alvien"
-BIRTHDAY_PERSON_2 = "Vinella"
+BIRTHDAY_PERSON_1 = "Alvien's 30<sup>th</sup>"
+BIRTHDAY_PERSON_2 = "Vinella's 2<sup>th</sup>"
 
 EVENT_TITLE = "Birthday Celebration 🎂"
 EVENT_SUBTITLE = "Two Birthdays, One Special Celebration ✨"
@@ -56,7 +56,7 @@ Two birthdays, one unforgettable night.
 
 # Digits shown on the golden number balloons floating in the background
 # (e.g. an age like "25" or the year "26"). Use "" to disable.
-NUMBER_BALLOONS = "26"
+NUMBER_BALLOONS = "30"
 
 # Optional nicer titles for the songs in assets/music/ (filename -> title).
 # Files not listed here get an automatic title from their filename.

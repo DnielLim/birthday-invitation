@@ -91,6 +91,25 @@ a { color: inherit; }
 
 .script { font-family: var(--font-script); font-weight: 400; }
 .amp { font-family: var(--font-serif); font-style: italic; color: var(--gold-2); }
+sup, .sup-th {
+  font-size: 0.52em;
+  line-height: 0;
+  position: relative;
+  top: -0.62em;
+  vertical-align: baseline;
+  text-transform: lowercase;
+  font-weight: 600;
+  margin-left: 1px;
+  display: inline;
+}
+.script sup, .script .sup-th {
+  font-size: 0.42em;
+  top: -0.92em;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 700;
+  margin-left: 2px;
+}
 .muted { color: var(--ink-soft); text-align: center; margin: .25rem 0 0; }
 .eyebrow {
   font-size: .78rem; letter-spacing: .38em; text-transform: uppercase; font-weight: 600;
