@@ -167,8 +167,17 @@
     $$("[data-time]").forEach((el) => (el.textContent = config.time));
     $$("[data-venue]").forEach((el) => (el.textContent = config.venue));
     $$("[data-address]").forEach((el) => (el.textContent = config.address));
-    $$("[data-dress]").forEach((el) => (el.textContent = config.dressCode));
     $$("[data-message]").forEach((el) => (el.textContent = `“${config.message}”`));
+
+    // Home Cover Screen clean names (Alvien & Vinella)
+    const cleanP1 = (config.person1 || "Alvien").replace(/'?s?\s*\d+.*$/i, "").replace(/<[^>]*>/g, "").trim() || "Alvien";
+    const cleanP2 = (config.person2 || "Vinella").replace(/'?s?\s*\d+.*$/i, "").replace(/<[^>]*>/g, "").trim() || "Vinella";
+    const topNameEl = document.querySelector(".intro__name--top");
+    const btmNameEl = document.querySelector(".intro__name--bottom");
+    if (topNameEl) topNameEl.textContent = cleanP1;
+    if (btmNameEl) btmNameEl.textContent = cleanP2;
+    const introSub = document.getElementById("introSub");
+    if (introSub) introSub.innerHTML = `${cleanP1} &amp; ${cleanP2} · Birthday Celebration`;
 
     // Monograms
     const init1 = (p1Plain || "A").charAt(0).toUpperCase();
@@ -250,8 +259,10 @@
     // 3D Cake in Section #cake
     const cakeCanvas = $("cake3d");
     if (cakeCanvas) {
+      const cleanP1 = (config.person1 || "").replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+      const cleanP2 = (config.person2 || "").replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
       mainCake = window.createCake(cakeCanvas, {
-        names: `${config.person1} & ${config.person2}`,
+        names: `${cleanP1} & ${cleanP2}`,
         modelUrl: config.cake_model,
       });
 

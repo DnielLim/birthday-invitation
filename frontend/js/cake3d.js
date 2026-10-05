@@ -6,27 +6,164 @@
   const rand = (a, b) => a + Math.random() * (b - a);
   const pick = (arr) => arr[(Math.random() * arr.length) | 0];
 
-  function textTexture(text, { w = 2048, h = 256, font = "Great Vibes", size = 150, repeat = 2, stroke = true } = {}) {
+  function cleanNameText(str) {
+    if (!str) return "Alvien & Vinella";
+    let clean = String(str).replace(/<[^>]*>/g, "");
+    clean = clean.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
+    clean = clean.replace(/\b2th\b/gi, "2nd").replace(/\b1th\b/gi, "1st").replace(/\b3th\b/gi, "3rd");
+    clean = clean.replace(/\s+/g, " ").trim();
+    return clean || "Alvien & Vinella";
+  }
+
+  function ribbonTexture(text, { w = 2048, h = 256, repeat = 2 } = {}) {
     const c = document.createElement("canvas");
     c.width = w; c.height = h;
     const g = c.getContext("2d");
-    g.font = `${size}px "${font}", "Brush Script MT", cursive`;
+
+    // Satin ivory ribbon background with subtle vertical shimmer
+    const ribbonGrad = g.createLinearGradient(0, 0, 0, h);
+    ribbonGrad.addColorStop(0, "rgba(255, 252, 245, 0.95)");
+    ribbonGrad.addColorStop(0.5, "rgba(255, 255, 255, 0.98)");
+    ribbonGrad.addColorStop(1, "rgba(255, 248, 240, 0.95)");
+    g.fillStyle = ribbonGrad;
+    g.fillRect(0, 0, w, h);
+
+    // Elegant gold piping border lines (top & bottom)
+    const goldGrad = g.createLinearGradient(0, 0, w, 0);
+    goldGrad.addColorStop(0, "#c99a38");
+    goldGrad.addColorStop(0.25, "#f5de8a");
+    goldGrad.addColorStop(0.5, "#d4af37");
+    goldGrad.addColorStop(0.75, "#faeb9e");
+    goldGrad.addColorStop(1, "#c99a38");
+
+    g.fillStyle = goldGrad;
+    g.fillRect(0, 4, w, 6);
+    g.fillRect(0, 16, w, 2.5);
+    g.fillRect(0, h - 18.5, w, 2.5);
+    g.fillRect(0, h - 10, w, 6);
+
+    // Text configuration
+    const displayStr = `✦  ${text}  ✦`;
+    const secW = w / repeat;
     g.textAlign = "center";
     g.textBaseline = "middle";
+
     for (let i = 0; i < repeat; i++) {
-      const x = (w / repeat) * (i + 0.5);
-      const grd = g.createLinearGradient(x - 400, 0, x + 400, 0);
-      grd.addColorStop(0, "#fff4c8"); grd.addColorStop(0.45, "#e8c46a"); grd.addColorStop(0.7, "#b8862c"); grd.addColorStop(1, "#f7dc8f");
-      if (stroke) {
-        g.lineWidth = 10; g.strokeStyle = "rgba(255,255,255,0.95)"; g.strokeText(text, x, h / 2 + 8);
-      }
-      g.fillStyle = grd;
-      g.fillText(text, x, h / 2 + 8);
+      const cx = secW * (i + 0.5);
+      const cy = h / 2 + 1;
+
+      g.font = `bold 78px "Outfit", "Cormorant Garamond", Georgia, sans-serif`;
+      const textW = g.measureText(displayStr).width;
+      const maxW = secW * 0.92;
+      let scale = 1;
+      if (textW > maxW) scale = maxW / textW;
+
+      g.save();
+      g.translate(cx, cy);
+      if (scale < 1) g.scale(scale, scale);
+
+      // Deep rich royal plum/burgundy wine text for maximum contrast and elegance
+      g.shadowColor = "rgba(70, 20, 40, 0.25)";
+      g.shadowBlur = 8;
+      g.shadowOffsetY = 3;
+      g.fillStyle = "#381122";
+      g.fillText(displayStr, 0, 0);
+
+      // Gold accent stroke
+      g.shadowColor = "transparent";
+      g.lineWidth = 1.6;
+      g.strokeStyle = "#c89a38";
+      g.strokeText(displayStr, 0, 0);
+
+      g.restore();
     }
+
     const t = new THREE.CanvasTexture(c);
     t.encoding = THREE.sRGBEncoding;
     t.anisotropy = 4;
     return t;
+  }
+
+  function topperTexture(text = "Happy Birthday", { w = 2048, h = 512 } = {}) {
+    const c = document.createElement("canvas");
+    c.width = w; c.height = h;
+    const g = c.getContext("2d");
+
+    const cx = w / 2;
+    const cy = h / 2;
+
+    // Frosted acrylic plaque with soft translucent fill
+    const pillW = w * 0.92;
+    const pillH = h * 0.72;
+    const px = (w - pillW) / 2;
+    const py = (h - pillH) / 2;
+    const r = pillH / 2;
+
+    g.save();
+    g.beginPath();
+    if (typeof g.roundRect === "function") {
+      g.roundRect(px, py, pillW, pillH, r);
+    } else {
+      g.arc(px + r, py + r, r, Math.PI * 0.5, Math.PI * 1.5);
+      g.lineTo(px + pillW - r, py);
+      g.arc(px + pillW - r, py + r, r, Math.PI * 1.5, Math.PI * 0.5);
+      g.closePath();
+    }
+    // Elegant warm pearl ivory acrylic plaque
+    const bgGrad = g.createLinearGradient(0, py, 0, py + pillH);
+    bgGrad.addColorStop(0, "rgba(255, 253, 248, 0.96)");
+    bgGrad.addColorStop(1, "rgba(255, 246, 238, 0.94)");
+    g.fillStyle = bgGrad;
+    g.fill();
+
+    // 24K Gold luxury double border
+    const goldGrad = g.createLinearGradient(px, py, px + pillW, py + pillH);
+    goldGrad.addColorStop(0, "#c49232");
+    goldGrad.addColorStop(0.3, "#fbe396");
+    goldGrad.addColorStop(0.5, "#d4af37");
+    goldGrad.addColorStop(0.7, "#faeaad");
+    goldGrad.addColorStop(1, "#c49232");
+
+    g.lineWidth = 10;
+    g.strokeStyle = goldGrad;
+    g.stroke();
+
+    // Side star sparkles
+    g.fillStyle = "#b8862c";
+    g.font = `bold 64px "Outfit", sans-serif`;
+    g.textAlign = "center";
+    g.textBaseline = "middle";
+    g.fillText("✨", px + 80, cy);
+    g.fillText("✨", px + pillW - 80, cy);
+
+    // "Happy Birthday" lettering - high contrast & luxurious
+    g.font = `bold 160px "Great Vibes", "Cormorant Garamond", cursive, serif`;
+    g.textAlign = "center";
+    g.textBaseline = "middle";
+
+    // Text: Deep Royal Burgundy Plum for effortless readability
+    g.shadowColor = "rgba(70, 20, 40, 0.3)";
+    g.shadowBlur = 8;
+    g.shadowOffsetY = 3;
+    g.fillStyle = "#381122";
+    g.fillText(text, cx, cy + 6);
+
+    // Fine gold outline accent
+    g.shadowColor = "transparent";
+    g.lineWidth = 2;
+    g.strokeStyle = "#c89a38";
+    g.strokeText(text, cx, cy + 6);
+
+    g.restore();
+
+    const t = new THREE.CanvasTexture(c);
+    t.encoding = THREE.sRGBEncoding;
+    t.anisotropy = 4;
+    return t;
+  }
+
+  function textTexture(text, opts = {}) {
+    return ribbonTexture(text, opts);
   }
 
   function stripeTexture(color) {
@@ -52,7 +189,7 @@
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2));
     renderer.outputEncoding = THREE.sRGBEncoding;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.08;
+    renderer.toneMappingExposure = 1.0;
 
     const scene = new THREE.Scene();
     scene.environment = makeEnvironment(renderer);
@@ -60,23 +197,50 @@
     const camBase = { y: 3.6, z: opts.startZ || 12.5 };
     camera.position.set(0, camBase.y, camBase.z);
 
-    scene.add(new THREE.HemisphereLight(0xffffff, 0xf3d0ff, 0.75));
-    const key = new THREE.DirectionalLight(0xfff2e0, 1.25); key.position.set(5, 9, 7); scene.add(key);
-    const rim = new THREE.DirectionalLight(0xffb6dc, 0.9); rim.position.set(-6, 4, -6); scene.add(rim);
+    // Warm, pleasing ambient & directional lighting (avoids blinding white glare)
+    scene.add(new THREE.HemisphereLight(0xfff8f4, 0xe2d6ec, 0.55));
+    const key = new THREE.DirectionalLight(0xfff3e5, 0.95); key.position.set(5, 8, 7); scene.add(key);
+    const rim = new THREE.DirectionalLight(0xffd5e8, 0.65); rim.position.set(-6, 4, -6); scene.add(rim);
 
     const floatG = new THREE.Group();   // floats up & down
     const spinG = new THREE.Group();    // slowly rotates
     floatG.add(spinG);
     scene.add(floatG);
 
+    // Tasteful, comfortable color palette (velvet rose + pastel lilac + warm ivory cream)
     const M = {
-      plate: new THREE.MeshStandardMaterial({ color: 0xfff6ea, metalness: 0.35, roughness: 0.25 }),
-      gold: new THREE.MeshStandardMaterial({ color: 0xe6b85c, metalness: 1, roughness: 0.2, envMapIntensity: 1.4 }),
-      tier1: new THREE.MeshPhysicalMaterial({ color: 0xf9b9d3, roughness: 0.55, clearcoat: 0.35, clearcoatRoughness: 0.5, sheen: 1, sheenColor: new THREE.Color(0xffe3f0) }),
-      tier2: new THREE.MeshPhysicalMaterial({ color: 0xdccbff, roughness: 0.55, clearcoat: 0.35, clearcoatRoughness: 0.5, sheen: 1, sheenColor: new THREE.Color(0xf3ecff) }),
-      cream: new THREE.MeshPhysicalMaterial({ color: 0xfffaf3, roughness: 0.42, clearcoat: 0.6, clearcoatRoughness: 0.3 }),
-      berry: new THREE.MeshPhysicalMaterial({ color: 0xe23a5c, roughness: 0.25, clearcoat: 1 }),
-      leaf: new THREE.MeshStandardMaterial({ color: 0x4f9a5a, roughness: 0.6 }),
+      plate: new THREE.MeshStandardMaterial({ color: 0xf5ece0, metalness: 0.1, roughness: 0.35, envMapIntensity: 0.25 }),
+      gold: new THREE.MeshStandardMaterial({ color: 0xdca832, metalness: 0.88, roughness: 0.2, envMapIntensity: 1.2 }),
+      tier1: new THREE.MeshStandardMaterial({
+        color: 0xd97098, // Warm velvety Parisian strawberry rose
+        roughness: 0.62,
+        metalness: 0.04,
+        envMapIntensity: 0.12
+      }),
+      tier2: new THREE.MeshStandardMaterial({
+        color: 0xa890e6, // Dreamy royal pastel lilac
+        roughness: 0.62,
+        metalness: 0.04,
+        envMapIntensity: 0.12
+      }),
+      cream: new THREE.MeshPhysicalMaterial({
+        color: 0xfffdf7, // Luscious fresh whipped cream
+        roughness: 0.32,
+        clearcoat: 0.3,
+        clearcoatRoughness: 0.2,
+        envMapIntensity: 0.35
+      }),
+      berry: new THREE.MeshPhysicalMaterial({
+        color: 0xb51838, // Glossy ripe raspberry ruby
+        roughness: 0.18,
+        clearcoat: 1.0,
+        envMapIntensity: 0.5
+      }),
+      leaf: new THREE.MeshStandardMaterial({
+        color: 0x367c42, // Fresh natural green leaf
+        roughness: 0.5,
+        envMapIntensity: 0.2
+      }),
     };
 
     const procedural = new THREE.Group();
@@ -97,10 +261,17 @@
     const tier2 = new THREE.Mesh(new THREE.CylinderGeometry(T2.r, T2.r, T2.h, seg), M.tier2);
     tier2.position.y = T2.y0 + T2.h / 2; procedural.add(tier2);
 
-    // Name band around the bottom tier
+    // Name band around the bottom tier with dedicated ribbon sash texture
     const band = new THREE.Mesh(
-      new THREE.CylinderGeometry(T1.r + 0.015, T1.r + 0.015, 0.75, seg, 1, true),
-      new THREE.MeshStandardMaterial({ map: textTexture(names), transparent: true, metalness: 0.55, roughness: 0.3, alphaTest: 0.04 })
+      new THREE.CylinderGeometry(T1.r + 0.018, T1.r + 0.018, 0.72, seg, 1, true),
+      new THREE.MeshStandardMaterial({
+        map: ribbonTexture(cleanNameText(names)),
+        roughness: 0.38,
+        metalness: 0.08,
+        transparent: true,
+        opacity: 0.98,
+        side: THREE.DoubleSide
+      })
     );
     band.position.y = T1.y0 + T1.h * 0.42; procedural.add(band);
 
@@ -183,14 +354,14 @@
 
     // Two main candles (one per celebrant)
     const flames = [];
-    const glowTex = glowTexture("rgba(255,214,140,1)", "rgba(255,170,80,0)");
+    const glowTex = glowTexture("rgba(255,214,140,0.9)", "rgba(255,170,80,0)");
     const candleTop = T2.y0 + T2.h;
-    [[-0.48, "#f5a9cb"], [0.48, "#b9a3f5"]].forEach(([x, color]) => {
+    [[-0.52, "#e2669c"], [0.52, "#7d5bd6"]].forEach(([x, color]) => {
       const cg = new THREE.Group();
       cg.position.set(x, candleTop, 0);
       const body = new THREE.Mesh(
         new THREE.CylinderGeometry(0.12, 0.12, 1.25, 24),
-        new THREE.MeshStandardMaterial({ map: stripeTexture(color), roughness: 0.45 })
+        new THREE.MeshStandardMaterial({ map: stripeTexture(color), roughness: 0.35 })
       );
       body.position.y = 0.62; cg.add(body);
       const wick = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.14, 6), new THREE.MeshBasicMaterial({ color: 0x2a1a10 }));
@@ -198,26 +369,30 @@
 
       const flame = new THREE.Group();
       flame.position.y = 1.52;
-      const outer = new THREE.Mesh(new THREE.SphereGeometry(0.11, 16, 12), new THREE.MeshBasicMaterial({ color: 0xffb340, transparent: true, opacity: 0.9 }));
+      const outer = new THREE.Mesh(new THREE.SphereGeometry(0.11, 16, 12), new THREE.MeshBasicMaterial({ color: 0xff9e1b, transparent: true, opacity: 0.9 }));
       outer.scale.set(1, 2.1, 1);
       const inner = new THREE.Mesh(new THREE.SphereGeometry(0.06, 12, 10), new THREE.MeshBasicMaterial({ color: 0xfffbe6 }));
       inner.scale.set(1, 1.8, 1); inner.position.y = -0.04;
       const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true }));
-      glow.scale.set(1.3, 1.3, 1);
+      glow.scale.set(1.05, 1.05, 1);
       flame.add(outer, inner, glow);
       cg.add(flame);
-      const light = new THREE.PointLight(0xffb347, 1.1, 7, 2);
+      const light = new THREE.PointLight(0xffa834, 0.85, 6, 2);
       light.position.y = 1.6; cg.add(light);
       flames.push({ flame, light, on: true, k: 1 });
       spinG.add(cg);
     });
 
-    // "Happy Birthday" topper — stays facing the camera
-    const topper = new THREE.Mesh(
-      new THREE.PlaneGeometry(3.4, 0.85),
-      new THREE.MeshStandardMaterial({ map: textTexture("Happy Birthday", { w: 1024, h: 256, size: 150, repeat: 1 }), transparent: true, metalness: 0.6, roughness: 0.25, alphaTest: 0.04, side: THREE.DoubleSide })
-    );
-    topper.position.set(0, candleTop + 2.25, -0.2);
+    // "Happy Birthday" topper — high-contrast, crystal clear and stays facing camera
+    const topperGeo = new THREE.PlaneGeometry(3.6, 0.9);
+    const topperMat = new THREE.MeshBasicMaterial({
+      map: topperTexture("Happy Birthday"),
+      transparent: true,
+      side: THREE.DoubleSide,
+      depthWrite: false
+    });
+    const topper = new THREE.Mesh(topperGeo, topperMat);
+    topper.position.set(0, candleTop + 2.35, -0.05);
     floatG.add(topper);
 
     // Sparkles around the cake
