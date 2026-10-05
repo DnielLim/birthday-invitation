@@ -28,8 +28,8 @@ import streamlit.components.v1 as components
 # 🎉 CONFIGURATION — edit everything here
 # =============================================================================
 
-BIRTHDAY_PERSON_1 = "Alvien's 30<sup>th</sup>"
-BIRTHDAY_PERSON_2 = "Vinella's 2<sup>th</sup>"
+BIRTHDAY_PERSON_1 = "Alvien"
+BIRTHDAY_PERSON_2 = "Vinella"
 
 EVENT_TITLE = "Birthday Celebration 🎂"
 EVENT_SUBTITLE = "Two Birthdays, One Special Celebration ✨"

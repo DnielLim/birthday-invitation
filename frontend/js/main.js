@@ -9,8 +9,8 @@
 
   // App state
   let config = {
-    person1: "Alvien's 30<sup class=\"sup-th\">th</sup>",
-    person2: "Vinella's 2<sup class=\"sup-th\">th</sup>",
+    person1: "Alvien",
+    person2: "Vinella",
     title: "Birthday Celebration 🎂",
     subtitle: "Two Birthdays, One Special Celebration ✨",
     date: "Sabtu, 17 Oktober 2026",
@@ -152,8 +152,8 @@
     config = Object.assign({}, config, cfg);
 
     const stripHtml = (s) => (s ? String(s).replace(/<[^>]*>/g, "") : "");
-    const p1Display = config.person1Html || config.person1 || "Alvien's 30<sup class=\"sup-th\">th</sup>";
-    const p2Display = config.person2Html || config.person2 || "Vinella's 2<sup class=\"sup-th\">th</sup>";
+    const p1Display = config.person1Html || config.person1 || "Alvien";
+    const p2Display = config.person2Html || config.person2 || "Vinella";
     const p1Plain = stripHtml(p1Display);
     const p2Plain = stripHtml(p2Display);
 
@@ -379,14 +379,16 @@
       { opacity: 0, scale: 0.88, filter: "blur(12px)" },
       { opacity: 1, scale: 1, filter: "blur(0px)", duration: 1.8, ease: "elastic.out(1, 0.75)" },
       "-=0.6"
-    )
-    .fromTo(
-      introSub,
-      { opacity: 0, y: 15, letterSpacing: "0.25em" },
-      { opacity: 1, y: 0, letterSpacing: "0.12em", duration: 1.2, ease: "power2.out" },
-      "-=0.8"
-    )
-    .to(
+    );
+    if (introSub) {
+      tl.fromTo(
+        introSub,
+        { opacity: 0, y: 15, letterSpacing: "0.25em" },
+        { opacity: 1, y: 0, letterSpacing: "0.12em", duration: 1.2, ease: "power2.out" },
+        "-=0.8"
+      );
+    }
+    tl.to(
       openBtn,
       { opacity: 1, scale: 1, duration: 1, ease: "back.out(1.7)" },
       "+=0.2"
