@@ -34,20 +34,20 @@ BIRTHDAY_PERSON_2 = "Vinella"
 EVENT_TITLE = "Birthday Celebration 🎂"
 EVENT_SUBTITLE = "Two Birthdays, One Special Celebration ✨"
 
-EVENT_DATE = "10 October 2026"           # shown on the invitation
-EVENT_TIME = "18:00 - 22:00"             # shown on the invitation
-EVENT_VENUE = "The Glasshouse Garden"     # venue name
-EVENT_ADDRESS = "Jl. Senopati No. 10, Kebayoran Baru, Jakarta Selatan"
-DRESS_CODE = "Smart Casual — Pastel & Gold"
+EVENT_DATE = "Sabtu, 17 Oktober 2026"     # shown on the invitation
+EVENT_TIME = "15:30 WIB - Selesai"          # shown on the invitation
+EVENT_VENUE = "Kampung Kecil Summarecon Serpong"  # venue name
+EVENT_ADDRESS = "Summarecon Serpong, Tangerang"
+DRESS_CODE = ""
 
 # Machine-readable start/end (used for the countdown + "Add to Calendar").
 # Format: YYYY-MM-DDTHH:MM  (local time of the event)
-EVENT_START = "2026-10-10T18:00"
-EVENT_END = "2026-10-10T22:00"
+EVENT_START = "2026-10-17T15:30"
+EVENT_END = "2026-10-17T19:30"
 EVENT_TIMEZONE = "Asia/Jakarta"
 
 # Optional: custom Google Maps query/link. Leave "" to use venue + address.
-GOOGLE_MAPS_QUERY = ""
+GOOGLE_MAPS_QUERY = "https://share.google/bBRyOOnWS18cbC9u6"
 
 INVITATION_MESSAGE = """
 Join us as we celebrate another beautiful year of life, laughter, and memories.

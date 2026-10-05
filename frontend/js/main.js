@@ -13,15 +13,15 @@
     person2: "Vinella",
     title: "Birthday Celebration 🎂",
     subtitle: "Two Birthdays, One Special Celebration ✨",
-    date: "10 October 2026",
-    time: "18:00 - 22:00",
-    venue: "The Glasshouse Garden",
-    address: "Jl. Senopati No. 10, Kebayoran Baru, Jakarta Selatan",
-    dressCode: "Smart Casual — Pastel & Gold",
-    start: "2026-10-10T18:00",
-    end: "2026-10-10T22:00",
+    date: "Sabtu, 17 Oktober 2026",
+    time: "15:30 WIB - Selesai",
+    venue: "Kampung Kecil Summarecon Serpong",
+    address: "Summarecon Serpong, Tangerang",
+    dressCode: "",
+    start: "2026-10-17T15:30",
+    end: "2026-10-17T19:30",
     timezone: "Asia/Jakarta",
-    mapsQuery: "The Glasshouse Garden, Jl. Senopati No. 10, Kebayoran Baru, Jakarta Selatan",
+    mapsQuery: "https://share.google/bBRyOOnWS18cbC9u6",
     message: "Join us as we celebrate another beautiful year of life, laughter, and memories. Two birthdays, one unforgettable night.",
     numberBalloons: "26",
     googleFormUrl: "",
@@ -59,6 +59,7 @@
     }
 
     initTheme();
+    applyConfig(config);
     initVisualEffects();
     initCountdown();
     init3DTilt();
@@ -189,9 +190,9 @@
     }
 
     // Map links
-    const q = encodeURIComponent(config.mapsQuery || `${config.venue}, ${config.address}`);
-    const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${q}`;
-    const dirUrl = `https://www.google.com/maps/dir/?api=1&destination=${q}`;
+    const isDirectMapLink = config.mapsQuery && (config.mapsQuery.startsWith("http://") || config.mapsQuery.startsWith("https://"));
+    const mapsUrl = isDirectMapLink ? config.mapsQuery : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(config.mapsQuery || `${config.venue}, ${config.address}`)}`;
+    const dirUrl = isDirectMapLink ? config.mapsQuery : `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(config.mapsQuery || `${config.venue}, ${config.address}`)}`;
     if ($("mapsBtn")) $("mapsBtn").href = mapsUrl;
     if ($("directionsBtn")) $("directionsBtn").href = dirUrl;
 
@@ -558,7 +559,11 @@
 
     // Google Calendar Link
     if (gcalBtn) {
-      const fmtDate = (iso) => (iso ? iso.replace(/[-:]/g, "").slice(0, 15) : "20261010T180000");
+      const fmtDate = (iso) => {
+        if (!iso) return "20261017T153000";
+        const clean = iso.replace(/[-:]/g, "");
+        return clean.length === 13 ? clean + "00" : clean.slice(0, 15);
+      };
       const s = fmtDate(config.start);
       const e = fmtDate(config.end);
       const gcalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
@@ -570,7 +575,11 @@
     // Downloadable .ICS File
     if (icsBtn) {
       icsBtn.addEventListener("click", () => {
-        const fmtICS = (iso) => (iso ? iso.replace(/[-:]/g, "").slice(0, 15) : "20261010T180000");
+        const fmtICS = (iso) => {
+          if (!iso) return "20261017T153000";
+          const clean = iso.replace(/[-:]/g, "");
+          return clean.length === 13 ? clean + "00" : clean.slice(0, 15);
+        };
         const icsContent = [
           "BEGIN:VCALENDAR",
           "VERSION:2.0",
@@ -604,7 +613,8 @@
     const mapBox = $("mapBox");
     if (mapLoad && mapBox) {
       mapLoad.addEventListener("click", () => {
-        const q = encodeURIComponent(config.mapsQuery || `${config.venue}, ${config.address}`);
+        const queryTerm = config.venue ? `${config.venue}, ${config.address || "Tangerang"}` : "Kampung Kecil Summarecon Serpong";
+        const q = encodeURIComponent(queryTerm);
         mapBox.innerHTML = `<iframe src="https://maps.google.com/maps?q=${q}&t=&z=15&ie=UTF8&iwloc=&output=embed" loading="lazy" allowfullscreen></iframe>`;
       });
     }

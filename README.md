@@ -127,15 +127,14 @@ BIRTHDAY_PERSON_2 = "Vinella"
 EVENT_TITLE = "Birthday Celebration 🎂"
 EVENT_SUBTITLE = "Two Birthdays, One Special Celebration ✨"
 
-EVENT_DATE = "10 October 2026"           # Teks tanggal kartu
-EVENT_TIME = "18:00 - 22:00"             # Teks jam kartu
-EVENT_VENUE = "The Glasshouse Garden"     # Nama venue
-EVENT_ADDRESS = "Jl. Senopati No. 10, Kebayoran Baru, Jakarta Selatan"
-DRESS_CODE = "Smart Casual — Pastel & Gold"
+EVENT_DATE = "Sabtu, 17 Oktober 2026"     # Teks tanggal kartu
+EVENT_TIME = "15:30 WIB - Selesai"          # Teks jam kartu
+EVENT_VENUE = "Kampung Kecil Summarecon Serpong"  # Nama venue
+EVENT_ADDRESS = "Summarecon Serpong, Tangerang"
 
 # Format: YYYY-MM-DDTHH:MM (untuk countdown & file kalender otomatis)
-EVENT_START = "2026-10-10T18:00"
-EVENT_END = "2026-10-10T22:00"
+EVENT_START = "2026-10-17T15:30"
+EVENT_END = "2026-10-17T19:30"
 ```
 
 ### 🖼️ 4. Cara Memasukkan Foto
