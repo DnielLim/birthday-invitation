@@ -27,12 +27,12 @@
     googleFormUrl: "",
     portraits: { person1: "assets/images/alvien.jpg", person2: "assets/images/vinella.jpg" },
     gallery: [
-      { src: "assets/images/photo1.jpg", alt: "Golden Moments ✨" },
-      { src: "assets/images/photo2.jpg", alt: "Sweet Celebrations 🎂" },
-      { src: "assets/images/photo3.jpg", alt: "Toast to Joy 🥂" },
-      { src: "assets/images/photo4.jpg", alt: "Sunset Wishes 🎈" },
-      { src: "assets/images/photo5.jpg", alt: "Gifts of Love 🎁" },
-      { src: "assets/images/photo6.jpg", alt: "Night Sparkles 🎆" }
+      { src: "assets/images/photo1.jpg", alt: "Adventures Together 🏔️❤️" },
+      { src: "assets/images/photo2.jpg", alt: "Little Reindeer 🦌✨" },
+      { src: "assets/images/photo3.jpg", alt: "Joyful Moments 🧸" },
+      { src: "assets/images/photo4.jpg", alt: "Sweet Smiles & Candies 🍭" },
+      { src: "assets/images/photo5.jpg", alt: "Precious Baby Vinella 🌸✨" },
+      { src: "assets/images/photo6.jpg", alt: "Princess Vinella 💖" }
     ],
     tracks: [
       { title: "Selamat Ulang Tahun · Jamrud 🎸🎂", src: "assets/music/birthday_song.m4a" },
@@ -642,12 +642,12 @@
 
     // Use default photos if none supplied
     const defaultPhotos = [
-      { src: "assets/images/photo1.jpg", alt: "Golden Moments ✨" },
-      { src: "assets/images/photo2.jpg", alt: "Sweet Celebrations 🎂" },
-      { src: "assets/images/photo3.jpg", alt: "Toast to Joy 🥂" },
-      { src: "assets/images/photo4.jpg", alt: "Sunset Wishes 🎈" },
-      { src: "assets/images/photo5.jpg", alt: "Gifts of Love 🎁" },
-      { src: "assets/images/photo6.jpg", alt: "Night Sparkles 🎆" },
+      { src: "assets/images/photo1.jpg", alt: "Adventures Together 🏔️❤️" },
+      { src: "assets/images/photo2.jpg", alt: "Little Reindeer 🦌✨" },
+      { src: "assets/images/photo3.jpg", alt: "Joyful Moments 🧸" },
+      { src: "assets/images/photo4.jpg", alt: "Sweet Smiles & Candies 🍭" },
+      { src: "assets/images/photo5.jpg", alt: "Precious Baby Vinella 🌸✨" },
+      { src: "assets/images/photo6.jpg", alt: "Princess Vinella 💖" },
     ];
     renderGallery(defaultPhotos);
   }

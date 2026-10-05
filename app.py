@@ -67,6 +67,15 @@ PLAYLIST_TITLES = {
     "song_3.mp3": "Party All Night 🎉",
 }
 
+GALLERY_CAPTIONS = {
+    "photo1.jpg": "Adventures Together 🏔️❤️",
+    "photo2.jpg": "Little Reindeer 🦌✨",
+    "photo3.jpg": "Joyful Moments 🧸",
+    "photo4.jpg": "Sweet Smiles & Candies 🍭",
+    "photo5.jpg": "Precious Baby Vinella 🌸✨",
+    "photo6.jpg": "Princess Vinella 💖",
+}
+
 # ---- RSVP storage -----------------------------------------------------------
 # 1) Always: Streamlit session_state (per visitor session)
 # 2) Always: local CSV file (data/rsvp.csv) — fine locally, NOT persistent on
@@ -206,7 +215,7 @@ def build_media(signature: str) -> dict:
             key=lambda p: p.name.lower(),
         )
         for p in files[:12]:
-            gallery.append({"src": f"assets/images/{p.name}", "alt": _pretty_title(p.name)})
+            gallery.append({"src": f"assets/images/{p.name}", "alt": GALLERY_CAPTIONS.get(p.name, _pretty_title(p.name))})
 
     # Playlist
     tracks = []
