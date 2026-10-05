@@ -12,10 +12,27 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Great+Vibes&family=Outfit:wght@300;400;500;600;700&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="./style.css?v=20261005f" />
+  <link rel="stylesheet" href="./style.css?v=20261005g" />
+  <script>
+    (function () {
+      try {
+        var s = localStorage.getItem("theme");
+        var prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (s === "dark" || (!s && prefersDark)) {
+          document.documentElement.classList.add("dark-mode");
+        }
+      } catch (_) {}
+    })();
+  </script>
 </head>
 
 <body class="is-locked">
+
+  <!-- Floating Dark / Light Mode Toggle -->
+  <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark/light mode" title="Ganti Mode Gelap / Terang">
+    <span class="theme-toggle__icon" id="themeToggleIcon">🌙</span>
+    <span class="theme-toggle__text" id="themeToggleText">Dark</span>
+  </button>
 
   <!-- ====== Background layers ====== -->
   <div class="sky" aria-hidden="true"></div>
@@ -111,9 +128,6 @@
             <li><span class="ico">📍</span>
               <div><small>Venue</small><strong data-venue>[VENUE]</strong></div>
             </li>
-            <li><span class="ico">👗</span>
-              <div><small>Dress Code</small><strong data-dress>[DRESS CODE]</strong></div>
-            </li>
           </ul>
         </article>
       </div>
@@ -184,7 +198,6 @@
           <li><span>📅</span><strong data-date>[DATE]</strong></li>
           <li><span>⏰</span><strong data-time>[TIME]</strong></li>
           <li><span>📍</span><strong data-venue>[VENUE]</strong></li>
-          <li><span>👗</span><strong data-dress>[DRESS CODE]</strong></li>
         </ul>
         <div class="btn-row">
           <button class="btn btn--gold" id="icsBtn" type="button">Add to Calendar 📅</button>
@@ -272,98 +285,6 @@
       </div>
     </section>
 
-    <!-- RSVP -->
-    <section class="section" id="rsvp">
-      <header class="section__head reveal-up">
-        <p class="eyebrow">RSVP</p>
-        <h2 class="section__title">Will You Join Us? 💌</h2>
-        <p class="muted">We'd love to celebrate this special day with you.</p>
-      </header>
-      <div class="glass rsvp-card reveal-up" id="rsvpCard">
-        <!-- RSVP Form Switcher Tabs -->
-        <div class="rsvp-tabs" role="tablist" aria-label="Pilihan Metode Pengisian">
-          <button class="rsvp-tab active" id="tabInternalForm" type="button" role="tab" aria-selected="true">
-            💌 Form Cepat Web
-          </button>
-          <button class="rsvp-tab" id="tabGoogleForm" type="button" role="tab" aria-selected="false">
-            📝 Isi via Google Form
-          </button>
-        </div>
-
-        <!-- 1. Internal Interactive Glassmorphism Form -->
-        <div class="rsvp-pane active" id="paneInternalForm">
-          <div class="rsvp-choice" id="rsvpChoice" role="radiogroup" aria-label="Attendance">
-            <button class="choice" id="rsvpYes" type="button" role="radio" aria-checked="false">Yes, I'll be there!
-              🎉</button>
-            <button class="choice" id="rsvpNo" type="button" role="radio" aria-checked="false">Sorry, I can't make it
-              😢</button>
-          </div>
-
-          <form class="rsvp-form" id="rsvpForm" novalidate>
-            <label class="field">
-              <span>Name</span>
-              <input id="rsvpName" name="name" type="text" maxlength="120" placeholder="Your full name" required
-                autocomplete="name" />
-            </label>
-            <label class="field" id="guestsField">
-              <span>Number of Guests</span>
-              <div class="stepper">
-                <button type="button" id="guestMinus" aria-label="Less guests">−</button>
-                <input id="rsvpGuests" name="guests" type="number" min="1" max="10" value="1" inputmode="numeric" />
-                <button type="button" id="guestPlus" aria-label="More guests">+</button>
-              </div>
-            </label>
-            <label class="field">
-              <span id="msgLabel">Message</span>
-              <textarea id="rsvpMessage" name="message" rows="3" maxlength="1000"
-                placeholder="Write a sweet birthday wish for Alvien & Vinella..."></textarea>
-            </label>
-            <p class="form-error" id="rsvpError" role="alert"></p>
-            <button class="btn btn--gold btn--block" id="rsvpSubmit" type="submit">Confirm RSVP</button>
-          </form>
-
-          <div class="rsvp-thanks" id="rsvpThanks" aria-live="polite">
-            <div class="rsvp-thanks__icon">🎉</div>
-            <p class="rsvp-thanks__text" id="rsvpThanksText">Thank you! We can't wait to celebrate with you! 🎉</p>
-            <p class="rsvp-thanks__status" id="rsvpStatus"></p>
-            <button class="btn btn--ghost btn--sm" id="rsvpAgain" type="button">Edit / send another RSVP</button>
-          </div>
-        </div>
-
-        <!-- 2. Embedded Google Form in Web -->
-        <div class="rsvp-pane" id="paneGoogleForm">
-          <div class="gform-container">
-            <div class="gform-header">
-              <span class="gform-badge">Google Forms</span>
-              <div class="gform-header-actions">
-                <button class="gform-btn-edit" id="gformEditBtn" type="button" title="Ganti URL Google Form">⚙️ Ganti
-                  Link</button>
-                <a class="gform-popout" id="gformPopout" target="_blank" rel="noopener">Buka di Tab Baru ↗</a>
-              </div>
-            </div>
-
-            <!-- Setup Box when no custom URL or for changing URL -->
-            <div class="gform-setup" id="gformSetupCard" style="display:none;">
-              <div class="gform-setup__icon">📋</div>
-              <h3>Hubungkan Google Form Anda</h3>
-              <p>Masukkan link / tautan Google Form RSVP Anda untuk ditampilkan langsung di dalam website ini:</p>
-              <div class="gform-input-group">
-                <input type="url" id="gformCustomInput" placeholder="https://docs.google.com/forms/d/e/.../viewform" />
-                <button class="btn btn--gold btn--sm" id="gformSaveBtn" type="button">Simpan &amp; Tampilkan ✨</button>
-              </div>
-              <p class="gform-tip">💡 <strong>Cara dapatkan link:</strong> Buka Google Form Anda &gt; Klik tombol
-                <strong>Kirim</strong> &gt; Pilih ikon link tautan &gt; Salin link tersebut dan tempel di sini.</p>
-            </div>
-
-            <!-- Live Google Form Iframe -->
-            <div class="gform-wrapper" id="gformWrapper">
-              <iframe id="gformIframe" title="Google Form RSVP" src="about:blank" frameborder="0" marginheight="0"
-                marginwidth="0">Memuat Formulir...</iframe>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <!-- CELEBRATE -->
     <section class="section celebrate" id="celebrate">
@@ -426,10 +347,6 @@
           <span class="dot-icon">📸</span>
           <span class="dot-label">Galeri</span>
         </a>
-        <a href="#rsvp" class="quick-nav__dot" title="Konfirmasi RSVP" aria-label="RSVP">
-          <span class="dot-icon">✉️</span>
-          <span class="dot-label">RSVP</span>
-        </a>
         <a href="#final" class="quick-nav__dot" title="Penutup Acara" aria-label="Closing">
           <span class="dot-icon">❤️</span>
           <span class="dot-label">Penutup</span>
@@ -484,12 +401,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
 
-  <script src="./js/bridge.js?v=20261005f"></script>
-  <script src="./js/fx.js?v=20261005f"></script>
-  <script src="./js/scene3d.js?v=20261005f"></script>
+  <script src="./js/bridge.js?v=20261005g"></script>
+  <script src="./js/fx.js?v=20261005g"></script>
+  <script src="./js/scene3d.js?v=20261005g"></script>
   <script src="./js/cake3d.js"></script>
   <script src="./js/player.js"></script>
-  <script src="./js/main.js?v=20261005f"></script>
+  <script src="./js/main.js?v=20261005g"></script>
 </body>
 
 </html>

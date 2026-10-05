@@ -58,6 +58,7 @@
       player = new window.Player(config.tracks);
     }
 
+    initTheme();
     initVisualEffects();
     initCountdown();
     init3DTilt();
@@ -91,6 +92,51 @@
 
     // Run opening animation
     runIntroAnimation();
+  }
+
+  /* =========================================================================
+     Theme Toggle (Dark / Light Mode)
+     ========================================================================= */
+  function initTheme() {
+    const toggleBtn = $("themeToggle");
+    const toggleIcon = $("themeToggleIcon");
+    const toggleText = $("themeToggleText");
+
+    function applyTheme(isDark) {
+      if (isDark) {
+        document.body.classList.add("dark-mode");
+        document.documentElement.classList.add("dark-mode");
+        if (toggleIcon) toggleIcon.textContent = "☀️";
+        if (toggleText) toggleText.textContent = "Light";
+        if (toggleBtn) toggleBtn.setAttribute("aria-label", "Ganti ke mode terang");
+      } else {
+        document.body.classList.remove("dark-mode");
+        document.documentElement.classList.remove("dark-mode");
+        if (toggleIcon) toggleIcon.textContent = "🌙";
+        if (toggleText) toggleText.textContent = "Dark";
+        if (toggleBtn) toggleBtn.setAttribute("aria-label", "Ganti ke mode gelap");
+      }
+    }
+
+    let isDark = false;
+    try {
+      const saved = localStorage.getItem("theme");
+      if (saved) {
+        isDark = saved === "dark";
+      } else {
+        isDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+      }
+    } catch (_) {}
+
+    applyTheme(isDark);
+
+    toggleBtn?.addEventListener("click", () => {
+      isDark = !document.body.classList.contains("dark-mode");
+      applyTheme(isDark);
+      try {
+        localStorage.setItem("theme", isDark ? "dark" : "light");
+      } catch (_) {}
+    });
   }
 
   // Ensure initApp runs even if DOMContentLoaded already fired before script execution
@@ -507,7 +553,7 @@
     const gcalBtn = $("gcalBtn");
 
     const title = `${config.person1} & ${config.person2}'s Birthday Celebration 🎂`;
-    const details = `${config.subtitle}\nDress Code: ${config.dressCode}\n\nVenue: ${config.venue}\n${config.address}`;
+    const details = `${config.subtitle}\n\nVenue: ${config.venue}\n${config.address}`;
     const location = `${config.venue}, ${config.address}`;
 
     // Google Calendar Link
@@ -649,9 +695,10 @@
   }
 
   /* =========================================================================
-     7. Interactive RSVP Section
+     7. Interactive RSVP Section (Safely guarded)
      ========================================================================= */
   function initRSVP() {
+    if (!$("rsvpCard")) return;
     // Tab switching: Form Internal vs Google Form
     const tabInternal = $("tabInternalForm");
     const tabGoogle = $("tabGoogleForm");
@@ -771,6 +818,7 @@
   }
 
   function initGoogleFormSetup() {
+    if (!$("gformIframe")) return;
     const iframe = $("gformIframe");
     const popout = $("gformPopout");
     const setupCard = $("gformSetupCard");
@@ -945,7 +993,7 @@
   /* =========================================================================
      9. Manual Section Navigation & Active State (IntersectionObserver)
      ========================================================================= */
-  const sectionList = ["intro", "invitation", "celebrants", "cake", "details", "location", "memories", "rsvp", "final"];
+  const sectionList = ["intro", "invitation", "celebrants", "cake", "details", "location", "memories", "final"];
   const sectionIcons = {
     intro: "🏠",
     invitation: "💌",
@@ -954,7 +1002,6 @@
     details: "📅",
     location: "📍",
     memories: "📸",
-    rsvp: "✉️",
     final: "❤️"
   };
 
