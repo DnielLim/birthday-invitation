@@ -2,21 +2,23 @@
    Alvien & Vinella — 3D Birthday Invitation · Design system
    ========================================================================= */
 :root {
-  --ink: #3a2752;
-  --ink-soft: #6c5a86;
+  --ink: #22123b;
+  --ink-soft: #4a3564;
   --pink: #f5a9cb;
-  --pink-deep: #e2669c;
-  --lilac: #b9a3f5;
-  --purple: #7d5bd6;
+  --pink-deep: #c93478;
+  --lilac: #8b68e8;
+  --purple: #6236b8;
   --sky: #cfe0ff;
   --gold-1: #f7e3a3;
-  --gold-2: #d9ae4f;
-  --gold-3: #a87b25;
+  --gold-2: #bf8524;
+  --gold-3: #8a550d;
   --gold-grad: linear-gradient(135deg, #fff1c1 0%, #e8c46a 35%, #b8862c 60%, #f5d98c 100%);
-  --glass: rgba(255, 255, 255, 0.42);
-  --glass-strong: rgba(255, 255, 255, 0.62);
-  --glass-border: rgba(255, 255, 255, 0.75);
-  --shadow-lg: 0 40px 80px -30px rgba(83, 46, 130, 0.45), 0 18px 40px -20px rgba(226, 102, 156, 0.35);
+  --gold-text: #8c5510;
+  --gold-text-grad: linear-gradient(135deg, #8a520e 0%, #ba7c21 45%, #764206 100%);
+  --glass: rgba(255, 255, 255, 0.78);
+  --glass-strong: rgba(255, 255, 255, 0.94);
+  --glass-border: rgba(255, 255, 255, 0.95);
+  --shadow-lg: 0 32px 70px -25px rgba(58, 25, 95, 0.28), 0 14px 34px -18px rgba(200, 70, 130, 0.2);
   --radius-xl: 32px;
   --radius-lg: 22px;
   --font-serif: "Cormorant Garamond", Georgia, serif;
@@ -48,7 +50,7 @@ body {
   font-family: var(--font-sans);
   font-weight: 400;
   line-height: 1.6;
-  background: #f6e3f1;
+  background: #f7e6f3;
   overflow-x: hidden !important;
   touch-action: pan-y;
   -webkit-overflow-scrolling: touch;
@@ -156,18 +158,22 @@ sup,
   color: var(--ink-soft);
   text-align: center;
   margin: .25rem 0 0;
+  font-weight: 500;
 }
 
 .eyebrow {
-  font-size: .78rem;
-  letter-spacing: .38em;
+  font-size: .8rem;
+  letter-spacing: .32em;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 700;
   margin: 0 0 .6rem;
-  background: var(--gold-grad);
+  color: var(--gold-text);
+  background: var(--gold-text-grad);
   -webkit-background-clip: text;
   background-clip: text;
-  color: transparent;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  filter: drop-shadow(0 1px 2px rgba(255, 255, 255, 0.8));
 }
 
 /* ---------- Background layers ---------- */
@@ -177,10 +183,10 @@ sup,
   z-index: 0;
   pointer-events: none !important;
   background:
-    radial-gradient(120% 80% at 15% 0%, #ffd6ea 0%, transparent 55%),
-    radial-gradient(90% 70% at 90% 10%, #e0d2ff 0%, transparent 60%),
-    radial-gradient(120% 90% at 50% 110%, #c7dcff 0%, transparent 60%),
-    linear-gradient(180deg, #fbe1ef 0%, #eadcff 45%, #d6e4ff 100%);
+    radial-gradient(120% 80% at 15% 0%, #fde4f1 0%, transparent 55%),
+    radial-gradient(90% 70% at 90% 10%, #e6dafe 0%, transparent 60%),
+    radial-gradient(120% 90% at 50% 110%, #dbe6fe 0%, transparent 60%),
+    linear-gradient(180deg, #fbeaf4 0%, #eee3fe 45%, #e1edfe 100%);
 }
 
 .sky::after {
@@ -362,7 +368,8 @@ body.no-webgl .css-balloons {
 }
 
 .btn--gold {
-  color: #4a2f08;
+  color: #351e03;
+  font-weight: 700;
   background: var(--gold-grad);
   background-size: 200% 200%;
   box-shadow: 0 10px 30px -8px rgba(185, 132, 40, .6), inset 0 1px 0 rgba(255, 255, 255, .8), inset 0 -2px 6px rgba(120, 80, 10, .25);
@@ -387,15 +394,18 @@ body.no-webgl .css-balloons {
 
 .btn--ghost {
   color: var(--ink);
-  background: rgba(255, 255, 255, .5);
-  border: 1px solid rgba(255, 255, 255, .9);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, .85);
+  border: 1.5px solid rgba(125, 91, 214, .35);
+  font-weight: 600;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 6px 18px -8px rgba(83, 46, 130, 0.18);
 }
 
 .btn--ghost:hover {
   transform: translateY(-3px);
-  background: rgba(255, 255, 255, .8);
+  background: rgba(255, 255, 255, .95);
+  border-color: var(--purple);
   box-shadow: 0 12px 30px -12px rgba(125, 91, 214, .5);
 }
 
@@ -520,8 +530,10 @@ body.no-webgl .css-balloons {
   font-style: italic;
   font-size: clamp(1.4rem, 3.6vw, 2.2rem);
   color: var(--ink-soft);
+  font-weight: 600;
   margin: 0 0 .4rem;
   letter-spacing: .04em;
+  text-shadow: 0 1px 12px rgba(255, 255, 255, 0.9);
 }
 
 .intro__eyebrow .ch,
@@ -543,14 +555,15 @@ body.no-webgl .css-balloons {
 .intro__name {
   font-family: "Playfair Display", var(--font-serif);
   font-size: clamp(3.6rem, 11vw, 7.2rem);
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.04em;
   line-height: 1.05;
-  background: linear-gradient(135deg, #c4497f 0%, #8754d4 50%, #c98e2a 100%);
+  background: linear-gradient(135deg, #a8205f 0%, #5d2baa 50%, #995c0f 100%);
   -webkit-background-clip: text;
   background-clip: text;
-  color: transparent;
-  filter: drop-shadow(0 6px 18px rgba(184, 61, 115, 0.22));
+  -webkit-text-fill-color: transparent;
+  color: #5d2baa;
+  filter: drop-shadow(0 4px 14px rgba(93, 43, 170, 0.22));
   padding: 0 0.1em;
   transition: transform 0.35s var(--ease-out);
 }
@@ -568,37 +581,39 @@ body.no-webgl .css-balloons {
   margin: 0.15rem 0;
   font-family: var(--font-serif);
   font-style: italic;
-  font-weight: 500;
+  font-weight: 600;
   font-size: clamp(2rem, 5.5vw, 3.2rem);
   line-height: 1;
-  background: var(--gold-grad);
+  color: var(--gold-text);
+  background: var(--gold-text-grad);
   -webkit-background-clip: text;
   background-clip: text;
-  color: transparent;
-  filter: drop-shadow(0 2px 8px rgba(212, 175, 55, 0.35));
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 8px rgba(212, 175, 55, 0.25));
 }
 
 .intro__amp::before,
 .intro__amp::after {
   content: "";
   flex: 1;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(217, 174, 79, 0.8));
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, rgba(160, 105, 25, 0.7));
   border-radius: 999px;
 }
 
 .intro__amp::after {
-  background: linear-gradient(90deg, rgba(217, 174, 79, 0.8), transparent);
+  background: linear-gradient(90deg, rgba(160, 105, 25, 0.7), transparent);
 }
 
 .intro__names .script,
 .invite-card__names .script,
 .final__names .script {
-  background: linear-gradient(120deg, #c4497f 0%, #8a5ad9 50%, #d19a35 100%);
+  background: linear-gradient(120deg, #aa2261 0%, #6031b2 50%, #995c0f 100%);
   -webkit-background-clip: text;
   background-clip: text;
-  color: transparent;
-  filter: drop-shadow(0 6px 18px rgba(196, 73, 127, .25));
+  -webkit-text-fill-color: transparent;
+  color: #6031b2;
+  filter: drop-shadow(0 4px 14px rgba(96, 49, 178, .2));
   padding: 0 .08em;
 }
 
@@ -608,13 +623,14 @@ body.no-webgl .css-balloons {
 
 .intro__sub {
   font-family: var(--font-serif);
-  font-size: clamp(0.95rem, 2.5vw, 1.35rem);
-  letter-spacing: 0.16em;
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  margin: 0.5rem 0 2.2rem;
+  margin: 0.6rem 0 2.2rem;
   color: var(--ink);
-  font-weight: 600;
-  opacity: 0.92;
+  font-weight: 700;
+  opacity: 1;
+  text-shadow: 0 1px 10px rgba(255, 255, 255, 0.85);
 }
 
 .intro__btn {
@@ -705,9 +721,9 @@ button,
 
 .section__title {
   font-family: var(--font-serif);
-  font-weight: 600;
+  font-weight: 700;
   margin: 0;
-  line-height: 1.1;
+  line-height: 1.15;
   font-size: clamp(2.1rem, 5.4vw, 3.6rem);
   color: var(--ink);
   letter-spacing: -.01em;
@@ -716,11 +732,11 @@ button,
 .glass {
   position: relative;
   border-radius: var(--radius-xl);
-  background: linear-gradient(145deg, rgba(255, 255, 255, .66), rgba(255, 255, 255, .28));
+  background: linear-gradient(145deg, rgba(255, 255, 255, .94), rgba(255, 255, 255, .82));
   border: 1px solid var(--glass-border);
-  backdrop-filter: blur(18px) saturate(1.3);
-  -webkit-backdrop-filter: blur(18px) saturate(1.3);
-  box-shadow: var(--shadow-lg), inset 0 1px 0 rgba(255, 255, 255, .9);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  box-shadow: var(--shadow-lg), inset 0 1px 0 rgba(255, 255, 255, 1);
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
   -webkit-backface-visibility: hidden;
@@ -776,12 +792,12 @@ button,
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   background:
-    radial-gradient(120% 70% at 50% 0%, rgba(255, 255, 255, .9), rgba(255, 255, 255, 0) 70%),
-    linear-gradient(160deg, rgba(255, 240, 248, .78), rgba(238, 228, 255, .55) 55%, rgba(255, 255, 255, .5));
-  border: 1px solid rgba(255, 255, 255, .9);
-  backdrop-filter: blur(22px) saturate(1.4);
-  -webkit-backdrop-filter: blur(22px) saturate(1.4);
-  box-shadow: 0 60px 120px -40px rgba(83, 46, 130, .55), 0 25px 60px -30px rgba(226, 102, 156, .5), inset 0 1px 0 #fff;
+    radial-gradient(120% 70% at 50% 0%, rgba(255, 255, 255, .98), rgba(255, 255, 255, 0.85) 70%),
+    linear-gradient(160deg, rgba(255, 246, 252, .96), rgba(246, 240, 255, .92) 55%, rgba(255, 255, 255, .95));
+  border: 1.5px solid rgba(255, 255, 255, 1);
+  backdrop-filter: blur(26px) saturate(1.5);
+  -webkit-backdrop-filter: blur(26px) saturate(1.5);
+  box-shadow: 0 45px 90px -30px rgba(58, 25, 95, .32), 0 20px 45px -20px rgba(200, 70, 130, .25), inset 0 1px 0 #fff;
 }
 
 .invite-card>* {
@@ -854,10 +870,11 @@ button,
 
 .invite-card__title {
   font-family: var(--font-serif);
-  font-weight: 600;
+  font-weight: 700;
   font-size: clamp(1.9rem, 5vw, 2.8rem);
   margin: 0;
   line-height: 1.1;
+  color: var(--ink);
 }
 
 .divider {
@@ -897,6 +914,7 @@ button,
   font-family: var(--font-serif);
   font-size: clamp(1.1rem, 2.6vw, 1.35rem);
   font-style: italic;
+  font-weight: 600;
   margin: 0 0 1rem;
   color: var(--ink-soft);
 }
@@ -906,11 +924,15 @@ button,
   font-size: clamp(1.15rem, 2.6vw, 1.35rem);
   margin: 0 auto .6rem;
   max-width: 30em;
+  color: #24133b;
+  font-weight: 500;
+  line-height: 1.65;
 }
 
 .invite-card__come {
   font-size: .95rem;
   color: var(--ink-soft);
+  font-weight: 500;
   margin: 0 0 1.6rem;
 }
 
@@ -930,9 +952,9 @@ button,
   align-items: center;
   padding: .85rem 1rem;
   border-radius: 18px;
-  background: rgba(255, 255, 255, .55);
-  border: 1px solid rgba(255, 255, 255, .9);
-  box-shadow: 0 10px 24px -16px rgba(83, 46, 130, .5);
+  background: rgba(255, 255, 255, .94);
+  border: 1.5px solid rgba(255, 255, 255, 1);
+  box-shadow: 0 8px 22px -12px rgba(58, 25, 95, .2);
 }
 
 .info-grid .ico {
@@ -948,17 +970,19 @@ button,
 
 .info-grid small {
   display: block;
-  font-size: .7rem;
+  font-size: .72rem;
   letter-spacing: .18em;
   text-transform: uppercase;
+  font-weight: 700;
   color: var(--ink-soft);
 }
 
 .info-grid strong {
-  font-weight: 600;
-  font-size: .98rem;
+  font-weight: 700;
+  font-size: 1.02rem;
   line-height: 1.3;
   display: block;
+  color: var(--ink);
 }
 
 .scroll-cue {
@@ -1000,10 +1024,10 @@ button,
   border-radius: 30px;
   padding: 14px;
   text-align: center;
-  background: linear-gradient(160deg, rgba(255, 255, 255, .75), rgba(255, 255, 255, .3));
-  border: 1px solid rgba(255, 255, 255, .9);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: linear-gradient(160deg, rgba(255, 255, 255, .95), rgba(255, 255, 255, .82));
+  border: 1.5px solid rgba(255, 255, 255, 1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   box-shadow: var(--shadow-lg);
 }
 
@@ -1057,9 +1081,10 @@ button,
 
 .person-card__role {
   margin: .2rem 0 0;
-  font-size: .82rem;
-  letter-spacing: .22em;
+  font-size: .85rem;
+  letter-spacing: .2em;
   text-transform: uppercase;
+  font-weight: 700;
   color: var(--ink-soft);
 }
 
@@ -1086,7 +1111,7 @@ button,
 
 .person-card:hover .person-card__name,
 .person-card.is-hover .person-card__name {
-  color: #b4407a;
+  color: #a42967;
   text-shadow: 0 0 24px rgba(255, 200, 230, .95), 0 0 2px #fff;
 }
 
@@ -1125,6 +1150,7 @@ button,
 
 .cake-title {
   font-family: var(--font-serif);
+  font-weight: 700;
   font-size: clamp(2rem, 5vw, 2.8rem);
   margin-top: .75rem;
   margin-bottom: .45rem;
@@ -1135,14 +1161,14 @@ button,
   display: inline-flex;
   align-items: center;
   gap: .5rem;
-  padding: .5rem 1.3rem;
+  padding: .55rem 1.4rem;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.75);
-  border: 1px solid rgba(226, 102, 156, 0.28);
+  background: rgba(255, 255, 255, 0.94);
+  border: 1.5px solid rgba(226, 102, 156, 0.35);
   box-shadow: 0 8px 20px -8px rgba(83, 46, 130, 0.15);
   font-size: .95rem;
-  font-weight: 500;
-  color: var(--ink-soft);
+  font-weight: 600;
+  color: #382252;
   backdrop-filter: blur(8px);
   margin: .2rem 0;
 }
@@ -1287,7 +1313,7 @@ body.no-webgl .css-cake {
 
 .date-card__label {
   margin: 0;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: .2em;
   text-transform: uppercase;
   font-size: .85rem;
@@ -1299,7 +1325,7 @@ body.no-webgl .css-cake {
   font-size: clamp(2.6rem, 7vw, 3.6rem);
   margin: .2rem 0 1.2rem;
   line-height: 1.1;
-  color: #9a4fb8;
+  color: #7b2394;
 }
 
 .countdown {
@@ -1313,9 +1339,9 @@ body.no-webgl .css-cake {
 .countdown div {
   padding: .9rem .3rem;
   border-radius: 18px;
-  background: linear-gradient(160deg, #fff, rgba(255, 255, 255, .55));
-  border: 1px solid #fff;
-  box-shadow: 0 14px 30px -18px rgba(83, 46, 130, .6);
+  background: rgba(255, 255, 255, 0.95);
+  border: 1.5px solid #fff;
+  box-shadow: 0 12px 28px -14px rgba(58, 25, 95, .3);
 }
 
 .countdown strong {
@@ -1323,16 +1349,19 @@ body.no-webgl .css-cake {
   font-family: var(--font-serif);
   font-size: clamp(1.8rem, 5vw, 2.6rem);
   line-height: 1;
-  background: linear-gradient(135deg, #c4497f, #7d5bd6);
+  font-weight: 800;
+  background: linear-gradient(135deg, #a6235f, #5b31b3);
   -webkit-background-clip: text;
   background-clip: text;
-  color: transparent;
+  -webkit-text-fill-color: transparent;
+  color: #5b31b3;
 }
 
 .countdown span {
-  font-size: .68rem;
+  font-size: .72rem;
   letter-spacing: .2em;
   text-transform: uppercase;
+  font-weight: 700;
   color: var(--ink-soft);
 }
 
@@ -1350,9 +1379,12 @@ body.no-webgl .css-cake {
   display: flex;
   gap: .9rem;
   align-items: center;
-  padding: .7rem 1rem;
+  padding: .75rem 1.1rem;
   border-radius: 14px;
-  background: rgba(255, 255, 255, .5);
+  background: rgba(255, 255, 255, .9);
+  border: 1px solid rgba(255, 255, 255, 1);
+  color: var(--ink);
+  box-shadow: 0 6px 16px -8px rgba(58, 25, 95, 0.12);
 }
 
 .date-list span {
@@ -1360,7 +1392,8 @@ body.no-webgl .css-cake {
 }
 
 .date-list strong {
-  font-weight: 500;
+  font-weight: 600;
+  color: var(--ink);
 }
 
 /* ---------- Location ---------- */
@@ -1383,13 +1416,17 @@ body.no-webgl .css-cake {
 .location-card__info h3 {
   font-family: var(--font-serif);
   font-size: clamp(1.8rem, 4vw, 2.4rem);
+  font-weight: 700;
   margin: 0 0 .4rem;
   line-height: 1.15;
+  color: var(--ink);
 }
 
 .location-card__info p {
   margin: 0;
   color: var(--ink-soft);
+  font-size: 1.05rem;
+  font-weight: 500;
 }
 
 .location-card__info .btn-row {
@@ -1473,8 +1510,9 @@ body.no-webgl .css-cake {
   bottom: 10px;
   text-align: center;
   font-family: var(--font-script);
-  font-size: 1.5rem;
-  color: var(--ink-soft);
+  font-size: 1.65rem;
+  font-weight: 600;
+  color: #382252;
 }
 
 .memory:hover {
@@ -1902,11 +1940,12 @@ body.no-webgl .css-cake {
 
 .final__title {
   font-family: var(--font-serif);
-  font-weight: 600;
+  font-weight: 700;
   font-size: clamp(2.2rem, 6vw, 4rem);
   margin: 0;
   line-height: 1.12;
-  text-shadow: 0 10px 40px rgba(245, 169, 203, .45);
+  color: #ffffff;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), 0 0 30px rgba(245, 169, 203, .35);
 }
 
 .final__names {
@@ -1916,11 +1955,12 @@ body.no-webgl .css-cake {
 }
 
 .final__names .script {
-  background: linear-gradient(120deg, #ffc3dd, #d8c8ff 50%, #ffe39a);
+  background: linear-gradient(120deg, #ffc0dc, #dbcbff 50%, #ffe299);
   -webkit-background-clip: text;
   background-clip: text;
-  color: transparent;
-  filter: drop-shadow(0 6px 24px rgba(255, 195, 221, .45));
+  -webkit-text-fill-color: transparent;
+  color: #ffc0dc;
+  filter: drop-shadow(0 6px 24px rgba(255, 192, 220, .4));
 }
 
 .final__see {
@@ -1935,8 +1975,9 @@ body.no-webgl .css-cake {
   bottom: 1.4rem;
   left: 0;
   right: 0;
-  font-size: .8rem;
-  opacity: .6;
+  font-size: .85rem;
+  color: #d8c9ee;
+  opacity: .85;
   z-index: 2;
 }
 
@@ -2508,18 +2549,27 @@ body.no-webgl .css-cake {
 /* Dark Mode Variables and Luxury Night Palette */
 html.dark-mode,
 body.dark-mode {
-  --ink: #f5effc;
-  --ink-soft: #c6b7db;
-  --glass: rgba(23, 16, 38, 0.68);
-  --glass-strong: rgba(30, 20, 50, 0.88);
-  --glass-border: rgba(232, 196, 106, 0.28);
-  --shadow-lg: 0 35px 80px -25px rgba(0, 0, 0, 0.88), 0 15px 35px -15px rgba(217, 174, 79, 0.2);
+  --ink: #faf4ff;
+  --ink-soft: #d3c4ea;
+  --glass: rgba(24, 16, 42, 0.88);
+  --glass-strong: rgba(34, 22, 58, 0.96);
+  --glass-border: rgba(232, 196, 106, 0.35);
+  --shadow-lg: 0 35px 80px -25px rgba(0, 0, 0, 0.9), 0 15px 35px -15px rgba(217, 174, 79, 0.25);
   background: #0d0818;
-  color: #f5effc;
+  color: #faf4ff;
 }
 
 body.dark-mode {
   background: #0d0818 !important;
+}
+
+body.dark-mode .eyebrow {
+  color: #f7d070 !important;
+  background: linear-gradient(135deg, #ffe5a3 0%, #f7c964 50%, #ffe5a3 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: 0 0 14px rgba(247, 208, 112, 0.3);
 }
 
 body.dark-mode .sky {
@@ -2540,18 +2590,24 @@ body.dark-mode .night-veil {
 }
 
 body.dark-mode .glass {
-  background: linear-gradient(145deg, rgba(32, 21, 51, 0.72), rgba(16, 10, 28, 0.82)) !important;
-  border: 1px solid rgba(232, 196, 106, 0.22) !important;
+  background: linear-gradient(145deg, rgba(34, 22, 56, 0.9), rgba(18, 11, 32, 0.94)) !important;
+  border: 1px solid rgba(232, 196, 106, 0.28) !important;
   box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
 }
 
 body.dark-mode .section__title {
-  color: #faf2fd !important;
-  text-shadow: 0 2px 18px rgba(212, 175, 55, 0.2);
+  color: #ffffff !important;
+  text-shadow: 0 2px 18px rgba(212, 175, 55, 0.25);
+}
+
+body.dark-mode .intro__eyebrow {
+  color: #d3c4ea !important;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
 }
 
 body.dark-mode .intro__sub {
-  color: #ede2f5 !important;
+  color: #faf4ff !important;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.8);
 }
 
 body.dark-mode .intro__name,
@@ -2561,14 +2617,101 @@ body.dark-mode .final__names .script {
   background: linear-gradient(120deg, #fca5cd 0%, #cdabff 50%, #f7d479 100%) !important;
   -webkit-background-clip: text !important;
   background-clip: text !important;
-  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  color: #fca5cd !important;
   filter: drop-shadow(0 6px 20px rgba(205, 171, 255, 0.35)) !important;
 }
 
+body.dark-mode .intro__amp {
+  color: #f7d070 !important;
+  background: linear-gradient(135deg, #ffe5a3 0%, #f7c964 50%, #ffe5a3 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+body.dark-mode .intro__amp::before {
+  background: linear-gradient(90deg, transparent, rgba(247, 208, 112, 0.6)) !important;
+}
+body.dark-mode .intro__amp::after {
+  background: linear-gradient(90deg, rgba(247, 208, 112, 0.6), transparent) !important;
+}
+
+body.dark-mode .invite-card {
+  background: linear-gradient(155deg, rgba(36, 22, 60, 0.92), rgba(18, 11, 32, 0.95)) !important;
+  border: 1px solid rgba(232, 196, 106, 0.35) !important;
+}
+
+body.dark-mode .invite-card__title {
+  color: #ffffff !important;
+}
+
+body.dark-mode .invite-card__subtitle {
+  color: #d3c4ea !important;
+}
+
+body.dark-mode .invite-card__msg {
+  color: #f0e8f8 !important;
+}
+
+body.dark-mode .invite-card__come {
+  color: #d3c4ea !important;
+}
+
+body.dark-mode .info-grid li {
+  background: rgba(36, 22, 58, 0.92) !important;
+  border: 1px solid rgba(232, 196, 106, 0.28) !important;
+  box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.5) !important;
+}
+
+body.dark-mode .info-grid small {
+  color: #d3c4ea !important;
+}
+
+body.dark-mode .info-grid strong {
+  color: #ffffff !important;
+}
+
+body.dark-mode .person-card {
+  background: linear-gradient(160deg, rgba(38, 24, 62, 0.92), rgba(22, 14, 38, 0.95)) !important;
+  border: 1px solid rgba(232, 196, 106, 0.3) !important;
+}
+
+body.dark-mode .person-card__name {
+  color: #ffffff !important;
+}
+
+body.dark-mode .person-card__role {
+  color: #d3c4ea !important;
+}
+
+body.dark-mode .cake-title {
+  color: #ffffff !important;
+}
+
+body.dark-mode .cake-hint {
+  background: rgba(36, 22, 58, 0.92) !important;
+  color: #faf4ff !important;
+  border-color: rgba(232, 196, 106, 0.35) !important;
+}
+
+body.dark-mode .date-card {
+  border-color: rgba(232, 196, 106, 0.3) !important;
+}
+
+body.dark-mode .date-card__label {
+  color: #d3c4ea !important;
+}
+
+body.dark-mode .date-card__names {
+  color: #fca5cd !important;
+  text-shadow: 0 0 16px rgba(252, 165, 205, 0.3) !important;
+}
+
 body.dark-mode .countdown>div {
-  background: rgba(36, 23, 56, 0.8) !important;
-  border: 1px solid rgba(232, 196, 106, 0.25) !important;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4) !important;
+  background: rgba(38, 24, 62, 0.92) !important;
+  border: 1px solid rgba(232, 196, 106, 0.3) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
 }
 
 body.dark-mode .countdown strong {
@@ -2576,6 +2719,47 @@ body.dark-mode .countdown strong {
   -webkit-background-clip: text !important;
   background-clip: text !important;
   color: transparent !important;
+}
+
+body.dark-mode .countdown span {
+  color: #d3c4ea !important;
+}
+
+body.dark-mode .date-list li {
+  background: rgba(36, 22, 58, 0.9) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(232, 196, 106, 0.25) !important;
+}
+
+body.dark-mode .date-list strong {
+  color: #ffffff !important;
+}
+
+body.dark-mode .location-card {
+  border-color: rgba(232, 196, 106, 0.3) !important;
+}
+
+body.dark-mode .location-card__info h3 {
+  color: #ffffff !important;
+}
+
+body.dark-mode .location-card__info p {
+  color: #d3c4ea !important;
+}
+
+body.dark-mode .memory {
+  background: rgba(36, 22, 58, 0.92) !important;
+  border: 1px solid rgba(232, 196, 106, 0.28) !important;
+}
+
+body.dark-mode .memory figcaption {
+  color: #faf4ff !important;
+}
+
+body.dark-mode .btn--ghost {
+  color: #faf4ff !important;
+  background: rgba(45, 30, 70, 0.85) !important;
+  border-color: rgba(232, 196, 106, 0.4) !important;
 }
 
 body.dark-mode .quick-nav__drawer {
@@ -2621,21 +2805,9 @@ body.dark-mode .player__list li:hover {
   background: rgba(255, 255, 255, 0.08) !important;
 }
 
-body.dark-mode .invite-card {
-  background: linear-gradient(155deg, rgba(34, 22, 54, 0.78), rgba(18, 11, 30, 0.88)) !important;
-  border: 1px solid rgba(232, 196, 106, 0.35) !important;
-}
-
-body.dark-mode .invite-card__details {
-  border-top-color: rgba(232, 196, 106, 0.25) !important;
-}
-
-body.dark-mode .date-card {
-  border-color: rgba(232, 196, 106, 0.3) !important;
-}
-
-body.dark-mode .location-card {
-  border-color: rgba(232, 196, 106, 0.3) !important;
+body.dark-mode .final__footer {
+  color: #d3c4ea !important;
+  opacity: .85 !important;
 }
 
 body.dark-mode .mem-item {
